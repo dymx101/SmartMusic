@@ -60,17 +60,19 @@ class PlayerViewModel: ObservableObject {
         }
         logger.info("Toggling favorite status for song: \(song.title)")
         
-        let descriptor = FetchDescriptor<Favorite>(
-            predicate: #Predicate<Favorite> { $0.song.id == song.id }
-        )
+        let descriptor = FetchDescriptor<Favorite>()
+        let favorites = (try? modelContext.fetch(descriptor)) ?? []
+        let existingFavorite = favorites.first { $0.song.id == song.id }
         
-        if let favorite = try? modelContext.fetch(descriptor).first {
+        if let favorite = existingFavorite {
             modelContext.delete(favorite)
             isFavorite = false
+            logger.info("Removed song from favorites")
         } else {
             let favorite = Favorite(song: song)
             modelContext.insert(favorite)
             isFavorite = true
+            logger.info("Added song to favorites")
         }
         
         try? modelContext.save()
@@ -82,10 +84,8 @@ class PlayerViewModel: ObservableObject {
             return
         }
         
-        let descriptor = FetchDescriptor<Favorite>(
-            predicate: #Predicate<Favorite> { $0.song.id == song.id }
-        )
-        
-        isFavorite = (try? modelContext.fetch(descriptor).first) != nil
+        let descriptor = FetchDescriptor<Favorite>()
+        let favorites = (try? modelContext.fetch(descriptor)) ?? []
+        isFavorite = favorites.contains { $0.song.id == song.id }
     }
 }

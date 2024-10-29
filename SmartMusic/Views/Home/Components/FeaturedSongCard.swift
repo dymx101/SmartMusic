@@ -2,6 +2,7 @@ import SwiftUI
 
 struct FeaturedSongCard: View {
     let song: Song
+    let onTap: () -> Void
     private let logger = LogService.shared
     
     var body: some View {
@@ -37,11 +38,8 @@ struct FeaturedSongCard: View {
             }
         )
         .padding(.horizontal)
-        .onAppear {
-            logger.debug("Loading featured song card: \(song.title)")
-        }
         .onTapGesture {
-            logger.info("User tapped featured song: \(song.title)")
+            onTap()
         }
     }
 }

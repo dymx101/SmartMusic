@@ -2,7 +2,7 @@ import Foundation
 import SwiftData
 
 @Model
-class Playlist {
+final class Playlist {
     var id: String
     var name: String
     var songs: [Song]

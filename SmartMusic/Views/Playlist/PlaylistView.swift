@@ -14,7 +14,7 @@ struct PlaylistView: View {
         NavigationView {
             List {
                 ForEach(viewModel.playlists) { playlist in
-                    NavigationLink(destination: PlaylistDetailView(playlist: playlist)) {
+                    NavigationLink(destination: PlaylistDetailView(playlist: playlist, modelContext: modelContext)) {
                         PlaylistRow(playlist: playlist)
                     }
                     .onAppear {

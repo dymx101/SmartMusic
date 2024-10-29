@@ -2,7 +2,7 @@ import Foundation
 import SwiftData
 
 @Model
-class Favorite {
+final class Favorite {
     var id: String
     var song: Song
     var createdAt: Date

@@ -25,47 +25,58 @@ class AudioPlayer: ObservableObject {
     }
     
     func play(_ song: Song) {
-        guard let url = URL(string: song.url) else {
-            logger.error("Invalid song URL: \(song.url)")
-            return
-        }
-        
-        logger.info("Starting to play song: \(song.title)")
-        
-        if currentSong?.id == song.id {
-            logger.debug("Resuming current song")
-            player?.play()
-            isPlaying = true
-            return
-        }
-        
-        currentSong = song
-        let playerItem = AVPlayerItem(url: url)
-        player = AVPlayer(playerItem: playerItem)
-        
-        // 观察播放时间
-        timeObserver = player?.addPeriodicTimeObserver(
-            forInterval: CMTime(seconds: 1, preferredTimescale: 1),
-            queue: .main
-        ) { [weak self] time in
-            self?.currentTime = time.seconds
-        }
-        
-        // 观察音频时长
-        player?.currentItem?.asset.loadValuesAsynchronously(forKeys: ["duration"]) {
-            DispatchQueue.main.async {
-                self.duration = playerItem.asset.duration.seconds
+        Task {
+            do {
+                // 先获取真实的播放地址
+                let realUrl = try await NetworkService.shared.fetchRealPlayUrl(permalinkUrl: song.url)
+                
+                await MainActor.run {
+                    guard let url = URL(string: realUrl) else {
+                        logger.error("Invalid real URL: \(realUrl)")
+                        return
+                    }
+                    
+                    logger.info("Starting to play song: \(song.title)")
+                    
+                    if currentSong?.id == song.id {
+                        logger.debug("Resuming current song")
+                        player?.play()
+                        isPlaying = true
+                        return
+                    }
+                    
+                    currentSong = song
+                    let playerItem = AVPlayerItem(url: url)
+                    player = AVPlayer(playerItem: playerItem)
+                    
+                    // 观察播放时间
+                    timeObserver = player?.addPeriodicTimeObserver(
+                        forInterval: CMTime(seconds: 1, preferredTimescale: 1),
+                        queue: .main
+                    ) { [weak self] time in
+                        self?.currentTime = time.seconds
+                    }
+                    
+                    // 观察音频时长
+                    player?.currentItem?.asset.loadValuesAsynchronously(forKeys: ["duration"]) {
+                        DispatchQueue.main.async {
+                            self.duration = playerItem.asset.duration.seconds
+                        }
+                    }
+                    
+                    player?.play()
+                    isPlaying = true
+                    setupNowPlaying(song: song)
+                    
+                    // 添加到播放历史
+                    addToHistory(song)
+                    
+                    logger.info("Successfully started playing: \(song.title)")
+                }
+            } catch {
+                logger.error("Failed to get real play URL: \(error.localizedDescription)")
             }
         }
-        
-        player?.play()
-        isPlaying = true
-        setupNowPlaying(song: song)
-        
-        // 添加到播放历史
-        addToHistory(song)
-        
-        logger.info("Successfully started playing: \(song.title)")
     }
     
     private func addToHistory(_ song: Song) {
@@ -75,24 +86,21 @@ class AudioPlayer: ObservableObject {
         }
         
         Task { @MainActor in
-            do {
-                let descriptor = FetchDescriptor<PlayHistory>(
-                    predicate: #Predicate<PlayHistory> { $0.song.id == song.id }
-                )
-                
-                if let existingHistory = try? modelContext.fetch(descriptor).first {
-                    existingHistory.playCount += 1
-                    existingHistory.lastPlayedAt = Date()
-                } else {
-                    let history = PlayHistory(song: song)
-                    modelContext.insert(history)
-                }
-                
-                try? modelContext.save()
-                logger.info("Added song to history: \(song.title)")
-            } catch {
-                logger.error("Failed to save history: \(error.localizedDescription)")
+            let descriptor = FetchDescriptor<PlayHistory>()
+            let histories = (try? modelContext.fetch(descriptor)) ?? []
+            let existingHistory = histories.first { $0.song.id == song.id }
+            
+            if let history = existingHistory {
+                history.playCount += 1
+                history.lastPlayedAt = Date()
+                logger.info("Updated existing history entry for: \(song.title)")
+            } else {
+                let history = PlayHistory(song: song)
+                modelContext.insert(history)
+                logger.info("Created new history entry for: \(song.title)")
             }
+            
+            try? modelContext.save()
         }
     }
     

@@ -5,31 +5,56 @@ import Combine
 class HomeViewModel: ObservableObject {
     @Published var recommendedSongs: [Song] = []
     @Published var featuredSongs: [Song] = []
+    @Published var genres: [Genre] = []
     @Published var isLoading = false
     @Published var errorMessage: String?
+    @Published var currentPage = 1
+    @Published var hasMorePages = true
     
+    private let pageSize = 20
     private let logger = LogService.shared
-
-    func fetchRecommendedSongs() async {
-        logger.info("Fetching recommended songs")
+    
+    init() {
+        fetchGenres()
+    }
+    
+    func fetchRecommendedSongs(forceRefresh: Bool = false) async {
+        // 如果不是强制刷新且已有数据，则直接返回
+        if !forceRefresh && !recommendedSongs.isEmpty {
+            return
+        }
+        
         isLoading = true
+        currentPage = 1 // 重置页码
         
         do {
-            recommendedSongs = try await NetworkService.shared.fetch("/recommended-songs")
-            logger.info("Successfully fetched \(recommendedSongs.count) recommended songs")
+            let songs = try await NetworkService.shared.fetchRecommendedSongs(
+                page: currentPage,
+                pageSize: pageSize,
+                query: "playback_count"
+            )
+            
+            recommendedSongs = songs
+            hasMorePages = songs.count == pageSize
+            logger.info("Successfully fetched \(songs.count) recommended songs")
         } catch {
             logger.error("Failed to fetch recommended songs: \(error.localizedDescription)")
             errorMessage = error.localizedDescription
+            hasMorePages = false
         }
         
         isLoading = false
     }
     
-    func fetchFeaturedSongs() async {
-        do {
-            featuredSongs = try await NetworkService.shared.fetch("/featured-songs")
-        } catch {
-            errorMessage = error.localizedDescription
+    func fetchGenres() {
+        Task {
+            do {
+                genres = try await NetworkService.shared.fetchGenres()
+                logger.info("Fetched \(genres.count) genres")
+            } catch {
+                logger.error("Failed to fetch genres: \(error.localizedDescription)")
+                errorMessage = error.localizedDescription
+            }
         }
     }
 }

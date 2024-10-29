@@ -4,6 +4,7 @@ struct FavoriteSongRow: View {
     let song: Song
     let onPlay: () -> Void
     let onRemove: () -> Void
+    private let logger = LogService.shared
     
     var body: some View {
         HStack(spacing: 12) {
@@ -17,6 +18,9 @@ struct FavoriteSongRow: View {
             }
             .frame(width: 50, height: 50)
             .cornerRadius(6)
+            .onAppear {
+                logger.debug("Loading album cover for favorite song: \(song.title)")
+            }
             
             VStack(alignment: .leading, spacing: 4) {
                 Text(song.title)
@@ -28,12 +32,18 @@ struct FavoriteSongRow: View {
             
             Spacer()
             
-            Button(action: onPlay) {
+            Button(action: {
+                logger.info("Playing favorite song: \(song.title)")
+                onPlay()
+            }) {
                 Image(systemName: "play.fill")
                     .font(.title3)
             }
             
-            Button(action: onRemove) {
+            Button(action: {
+                logger.info("Removing song from favorites: \(song.title)")
+                onRemove()
+            }) {
                 Image(systemName: "heart.fill")
                     .font(.title3)
                     .foregroundColor(.red)

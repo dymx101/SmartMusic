@@ -1,57 +1,261 @@
 import SwiftUI
+import SwiftData
+
+// 歌曲列表行组件
+struct SongListRow: View {
+    let song: Song
+    let onPlay: () -> Void
+    let modelContext: ModelContext
+    @State private var showFullPlayer = false
+    private let logger = LogService.shared
+    
+    var body: some View {
+        HStack(spacing: 12) {
+            Button(action: {
+                logger.info("User tapped song row: \(song.title)")
+                onPlay()
+                showFullPlayer = true
+            }) {
+                HStack(spacing: 12) {
+                    AsyncImage(url: URL(string: song.albumCover)) { image in
+                        image
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                    } placeholder: {
+                        Rectangle()
+                            .foregroundColor(.gray.opacity(0.2))
+                    }
+                    .frame(width: 50, height: 50)
+                    .cornerRadius(6)
+                    
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text(song.title)
+                            .font(.body)
+                            .lineLimit(1)
+                            .foregroundColor(.primary)
+                        Text(song.artist)
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+                            .lineLimit(1)
+                    }
+                    
+                    Spacer()
+                }
+            }
+            
+            Button(action: onPlay) {
+                Image(systemName: "play.fill")
+                    .font(.title3)
+            }
+        }
+        .padding(.vertical, 4)
+        .fullScreenCover(isPresented: $showFullPlayer) {
+            PlayerView(modelContext: modelContext)
+        }
+    }
+}
 
 struct HomeView: View {
+    @Environment(\.modelContext) private var modelContext
     @StateObject private var viewModel = HomeViewModel()
+    @StateObject private var playerViewModel: PlayerViewModel
+    @StateObject private var favoritesViewModel: FavoritesViewModel
+    @State private var showFullPlayer = false
     private let logger = LogService.shared
+    
+    init(modelContext: ModelContext) {
+        _playerViewModel = StateObject(wrappedValue: PlayerViewModel(modelContext: modelContext))
+        _favoritesViewModel = StateObject(wrappedValue: FavoritesViewModel(modelContext: modelContext))
+    }
     
     var body: some View {
         NavigationView {
             ScrollView {
                 VStack(spacing: 20) {
-                    if !viewModel.featuredSongs.isEmpty {
-                        FeaturedSongsCarousel(songs: viewModel.featuredSongs)
-                            .frame(height: 200)
-                            .onAppear {
-                                logger.debug("Featured songs carousel appeared")
-                            }
-                    }
+                    // 推荐轮播图
+                    featuredSongsSection
                     
-                    VStack(alignment: .leading) {
-                        Text("推荐歌曲")
-                            .font(.title2)
-                            .bold()
-                            .padding(.horizontal)
-                        
-                        ScrollView(.horizontal, showsIndicators: false) {
-                            LazyHStack(spacing: 15) {
-                                ForEach(viewModel.recommendedSongs) { song in
-                                    SongCard(song: song)
-                                        .onTapGesture {
-                                            logger.info("User tapped recommended song: \(song.title)")
-                                        }
-                                }
-                            }
-                            .padding(.horizontal)
-                        }
-                    }
+                    // 我的收藏
+                    favoritesSection
+                    
+                    // 音乐类型
+                    genresSection
+                    
+                    // 更多推荐
+                    recommendedSongsSection
                 }
+                .padding(.bottom, 60)
             }
             .navigationTitle("SmartMusic")
             .refreshable {
-                logger.info("User triggered refresh")
-                await viewModel.fetchRecommendedSongs()
-                await viewModel.fetchFeaturedSongs()
+                logger.info("User triggered manual refresh")
+                await viewModel.fetchRecommendedSongs(forceRefresh: true)
+                favoritesViewModel.fetchFavorites()
+            }
+            .onAppear {
+                if favoritesViewModel.favorites.isEmpty {
+                    favoritesViewModel.fetchFavorites()
+                }
             }
             .overlay {
                 if viewModel.isLoading {
                     ProgressView()
                 }
             }
+            .fullScreenCover(isPresented: $showFullPlayer) {
+                PlayerView(modelContext: modelContext)
+            }
         }
         .task {
-            logger.info("HomeView appeared, fetching initial data")
-            await viewModel.fetchRecommendedSongs()
-            await viewModel.fetchFeaturedSongs()
+            if viewModel.recommendedSongs.isEmpty {
+                logger.info("Initial fetch of recommended songs")
+                await viewModel.fetchRecommendedSongs()
+            }
+        }
+    }
+    
+    // 推荐轮播图部分
+    private var featuredSongsSection: some View {
+        Group {
+            if !viewModel.recommendedSongs.isEmpty {
+                FeaturedSongsCarousel(
+                    songs: Array(viewModel.recommendedSongs.prefix(6)),
+                    onSongTap: { song in
+                        logger.info("User tapped featured song: \(song.title)")
+                        playerViewModel.playSong(song)
+                        showFullPlayer = true
+                    }
+                )
+                .frame(height: 200)
+            }
+        }
+    }
+    
+    // 收藏部分
+    private var favoritesSection: some View {
+        VStack(alignment: .leading) {
+            HStack {
+                Text("我的收藏")
+                    .font(.title2)
+                    .bold()
+                
+                Spacer()
+                
+                if !favoritesViewModel.favorites.isEmpty {
+                    NavigationLink("查看全部") {
+                        FavoritesView(modelContext: modelContext)
+                    }
+                    .font(.subheadline)
+                }
+            }
+            .padding(.horizontal)
+            
+            if favoritesViewModel.favorites.isEmpty {
+                Text("还没有收藏的歌曲")
+                    .foregroundColor(.secondary)
+                    .padding()
+            } else {
+                ScrollView(.horizontal, showsIndicators: false) {
+                    LazyHStack(alignment: .top, spacing: 16) {
+                        let columns = favoritesViewModel.favorites.chunked(into: 3)
+                        ForEach(Array(columns.enumerated()), id: \.offset) { index, chunk in
+                            VStack(alignment: .leading, spacing: 8) {
+                                ForEach(chunk) { favorite in
+                                    FavoriteSongRow(
+                                        song: favorite.song,
+                                        onPlay: { playerViewModel.playSong(favorite.song) },
+                                        onRemove: { favoritesViewModel.removeFavorite(favorite) }
+                                    )
+                                    .frame(width: UIScreen.main.bounds.width - 32)
+                                    .frame(height: 70)
+                                }
+                                
+                                if chunk.count < 3 {
+                                    Spacer()
+                                }
+                            }
+                        }
+                    }
+                    .padding(.horizontal)
+                }
+                .scrollTargetBehavior(.paging)
+            }
+        }
+        .padding(.vertical)
+    }
+    
+    // 音乐类型部分
+    private var genresSection: some View {
+        VStack(alignment: .leading) {
+            HStack {
+                Text("音乐类型")
+                    .font(.title2)
+                    .bold()
+                
+                Spacer()
+            }
+            .padding(.horizontal)
+            
+            if viewModel.genres.isEmpty {
+                Text("暂无音乐类型")
+                    .foregroundColor(.secondary)
+                    .padding()
+            } else {
+                ScrollView(.horizontal, showsIndicators: false) {
+                    LazyHStack(alignment: .top, spacing: 16) {
+                        let columns = viewModel.genres.chunked(into: 3)
+                        ForEach(Array(columns.enumerated()), id: \.offset) { index, chunk in
+                            VStack(alignment: .leading, spacing: 8) {
+                                ForEach(chunk) { genre in
+                                    GenreCard(genre: genre)
+                                        .frame(width: UIScreen.main.bounds.width / 3 - 32)
+                                        .frame(height: 70)
+                                }
+                                
+                                if chunk.count < 2 {
+                                    Spacer()
+                                }
+                            }
+                        }
+                    }
+                    .padding(.horizontal)
+                }
+                .scrollTargetBehavior(.paging)
+            }
+        }
+        .padding(.vertical)
+    }
+    
+    // 更多推荐部分
+    private var recommendedSongsSection: some View {
+        VStack(alignment: .leading) {
+            Text("更多推荐")
+                .font(.title2)
+                .bold()
+                .padding(.horizontal)
+            
+            LazyVStack(spacing: 8) {
+                ForEach(Array(viewModel.recommendedSongs.dropFirst(6))) { song in
+                    SongListRow(
+                        song: song,
+                        onPlay: {
+                            logger.info("Playing song: \(song.title)")
+                            playerViewModel.playSong(song)
+                        },
+                        modelContext: modelContext
+                    )
+                    .padding(.horizontal)
+                }
+            }
+        }
+    }
+}
+
+// 添加数组扩展来支持分块
+extension Array {
+    func chunked(into size: Int) -> [[Element]] {
+        return stride(from: 0, to: count, by: size).map {
+            Array(self[$0 ..< Swift.min($0 + size, count)])
         }
     }
 }

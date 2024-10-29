@@ -3,6 +3,7 @@ import SwiftUI
 struct HistorySongRow: View {
     let history: PlayHistory
     let onPlay: () -> Void
+    private let logger = LogService.shared
     
     var body: some View {
         HStack(spacing: 12) {
@@ -16,6 +17,9 @@ struct HistorySongRow: View {
             }
             .frame(width: 50, height: 50)
             .cornerRadius(6)
+            .onAppear {
+                logger.debug("Loading album cover for history song: \(history.song.title)")
+            }
             
             VStack(alignment: .leading, spacing: 4) {
                 Text(history.song.title)
@@ -32,7 +36,10 @@ struct HistorySongRow: View {
             
             Spacer()
             
-            Button(action: onPlay) {
+            Button(action: {
+                logger.info("Playing song from history: \(history.song.title)")
+                onPlay()
+            }) {
                 Image(systemName: "play.fill")
                     .font(.title3)
             }

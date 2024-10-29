@@ -7,7 +7,7 @@ struct ContentView: View {
     var body: some View {
         ZStack(alignment: .bottom) {
             TabView {
-                HomeView()
+                HomeView(modelContext: modelContext)
                     .tabItem {
                         Label("首页", systemImage: "house.fill")
                     }
@@ -27,8 +27,20 @@ struct ContentView: View {
                         Label("我的", systemImage: "person.fill")
                     }
             }
+            .safeAreaInset(edge: .bottom) {
+                Color.clear.frame(height: 60) // 为底部播放器预留空间
+            }
             
-            MiniPlayerView(modelContext: modelContext)
+            VStack(spacing: 0) {
+                MiniPlayerView(modelContext: modelContext)
+                    .background(Color(.systemBackground))
+                
+                Divider()
+                
+                // TabBar 的高度
+                Color.clear
+                    .frame(height: UITabBarController().tabBar.frame.height)
+            }
         }
     }
 }

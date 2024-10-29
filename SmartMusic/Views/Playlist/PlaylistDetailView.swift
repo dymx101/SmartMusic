@@ -1,9 +1,15 @@
 import SwiftUI
+import SwiftData
 
 struct PlaylistDetailView: View {
     let playlist: Playlist
-    @StateObject private var viewModel = PlayerViewModel()
+    @StateObject private var viewModel: PlayerViewModel
     private let logger = LogService.shared
+    
+    init(playlist: Playlist, modelContext: ModelContext) {
+        self.playlist = playlist
+        _viewModel = StateObject(wrappedValue: PlayerViewModel(modelContext: modelContext))
+    }
     
     var body: some View {
         List {

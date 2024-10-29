@@ -4,11 +4,12 @@ import SwiftData
 struct FavoritesView: View {
     @Environment(\.modelContext) private var modelContext
     @StateObject private var viewModel: FavoritesViewModel
-    @StateObject private var playerViewModel = PlayerViewModel()
+    @StateObject private var playerViewModel: PlayerViewModel
     private let logger = LogService.shared
     
     init(modelContext: ModelContext) {
         _viewModel = StateObject(wrappedValue: FavoritesViewModel(modelContext: modelContext))
+        _playerViewModel = StateObject(wrappedValue: PlayerViewModel(modelContext: modelContext))
     }
     
     var body: some View {

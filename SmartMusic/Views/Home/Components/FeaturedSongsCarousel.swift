@@ -2,15 +2,22 @@ import SwiftUI
 
 struct FeaturedSongsCarousel: View {
     let songs: [Song]
-    @State private var currentIndex = 0
+    let onSongTap: (Song) -> Void
+    private let logger = LogService.shared
     
     var body: some View {
-        TabView(selection: $currentIndex) {
-            ForEach(Array(songs.enumerated()), id: \.element.id) { index, song in
-                FeaturedSongCard(song: song)
-                    .tag(index)
+        TabView {
+            ForEach(songs) { song in
+                FeaturedSongCard(
+                    song: song,
+                    onTap: {
+                        logger.info("User tapped featured song: \(song.title)")
+                        onSongTap(song)
+                    }
+                )
             }
         }
-        .tabViewStyle(.page(indexDisplayMode: .automatic))
+        .tabViewStyle(.page)
+        .indexViewStyle(.page(backgroundDisplayMode: .always))
     }
 }

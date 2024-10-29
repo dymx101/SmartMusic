@@ -2,7 +2,7 @@ import Foundation
 import SwiftData
 
 @Model
-class PlayHistory {
+final class PlayHistory {
     var id: String
     var song: Song
     var playCount: Int
