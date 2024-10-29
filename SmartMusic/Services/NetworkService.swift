@@ -314,6 +314,120 @@ class NetworkService {
             throw NetworkError.serverError(error.localizedDescription)
         }
     }
+    
+    // 获取指定类型的歌曲
+    func fetchGenreSongs(page: Int = 1, query: String) async throws -> [Song] {
+        logger.info("Fetching songs for genre: \(query), page: \(page)")
+        
+        // 处理查询参数中的特殊字符
+        let encodedQuery = query.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? query
+        let endpoint = "/music/soundcloud/genre/songs/?page=\(page)&query=\(encodedQuery)"
+        
+        guard let url = URL(string: baseURL + endpoint) else {
+            logger.error("Invalid URL: \(baseURL + endpoint)")
+            throw NetworkError.invalidURL
+        }
+        
+        do {
+            logger.debug("Making request to: \(url.absoluteString)")
+            let (data, response) = try await URLSession.shared.data(from: url)
+            
+            guard let httpResponse = response as? HTTPURLResponse else {
+                logger.error("Response is not HTTPURLResponse")
+                throw NetworkError.invalidResponse
+            }
+            
+            guard (200...299).contains(httpResponse.statusCode) else {
+                let errorMessage = "Invalid response status: \(httpResponse.statusCode)"
+                logger.error(errorMessage)
+                throw NetworkError.serverError(errorMessage)
+            }
+            
+            // 创建临时解码结构
+            struct TempSong: Codable {
+                let title: String
+                let artist: String
+                let album: String?
+                let genre: String?
+                let releaseDate: String?
+                let duration: Int
+                let songDescription: String?
+                let kind: String?
+                let license: String?
+                let permalink: String?
+                let permalinkUrl: String?
+                let permalinkImage: String?
+                let caption: String?
+                let downloadUrl: String?
+                let fullDuration: Int?
+                let likesCount: Int?
+                let playbackCount: Int?
+                let tagList: String?
+                
+                enum CodingKeys: String, CodingKey {
+                    case title
+                    case artist
+                    case album
+                    case genre
+                    case releaseDate = "release_date"
+                    case duration
+                    case songDescription = "description"
+                    case kind
+                    case license
+                    case permalink
+                    case permalinkUrl = "permalink_url"
+                    case permalinkImage = "permalink_image"
+                    case caption
+                    case downloadUrl = "download_url"
+                    case fullDuration = "full_duration"
+                    case likesCount = "likes_count"
+                    case playbackCount = "playback_count"
+                    case tagList = "tag_list"
+                }
+            }
+            
+            do {
+                let decoder = JSONDecoder()
+                let tempSongs = try decoder.decode([TempSong].self, from: data)
+                
+                // 将临时歌曲转换为正式的 Song 对象
+                let songs = tempSongs.map { tempSong -> Song in
+                    let song = Song(
+                        id: 0, // 临时 ID，将在 ViewModel 中被替换
+                        title: tempSong.title,
+                        artist: tempSong.artist,
+                        album: tempSong.album,
+                        genre: tempSong.genre,
+                        releaseDate: tempSong.releaseDate,
+                        duration: tempSong.duration,
+                        songDescription: tempSong.songDescription,
+                        kind: tempSong.kind,
+                        license: tempSong.license,
+                        permalink: tempSong.permalink,
+                        permalinkUrl: tempSong.permalinkUrl,
+                        permalinkImage: tempSong.permalinkImage,
+                        caption: tempSong.caption,
+                        downloadUrl: tempSong.downloadUrl,
+                        fullDuration: tempSong.fullDuration,
+                        likesCount: tempSong.likesCount,
+                        playbackCount: tempSong.playbackCount,
+                        tagList: tempSong.tagList
+                    )
+                    return song
+                }
+                
+                logger.info("Successfully decoded \(songs.count) songs")
+                return songs
+                
+            } catch {
+                logger.error("Decoding error: \(error)")
+                throw NetworkError.decodingError
+            }
+        } catch {
+            logger.error("Network error: \(error)")
+            throw error
+        }
+    }
 }
 
 

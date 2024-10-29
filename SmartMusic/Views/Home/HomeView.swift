@@ -204,31 +204,33 @@ struct HomeView: View {
                 ScrollView(.horizontal, showsIndicators: false) {
                     LazyHStack(spacing: 12) {
                         ForEach(viewModel.genres) { genre in
-                            VStack(spacing: 8) {
-                                AsyncImage(url: URL(string: genre.imageLargeLight)) { image in
-                                    image
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fill)
-                                } placeholder: {
-                                    Rectangle()
-                                        .foregroundColor(.gray.opacity(0.2))
+                            NavigationLink(destination: GenreSongsView(genreTitle: genre.title, modelContext: modelContext)) {
+                                VStack(spacing: 8) {
+                                    AsyncImage(url: URL(string: genre.imageLargeLight)) { image in
+                                        image
+                                            .resizable()
+                                            .aspectRatio(contentMode: .fill)
+                                    } placeholder: {
+                                        Rectangle()
+                                            .foregroundColor(.gray.opacity(0.2))
+                                    }
+                                    .frame(height: 120)
+                                    .frame(width: 200)
+                                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                                    
+                                    Text(genre.title)
+                                        .font(.subheadline)
+                                        .fontWeight(.medium)
+                                        .lineLimit(1)
                                 }
-                                .frame(height: 150)
-                                .frame(width: 180)
-                                .clipShape(RoundedRectangle(cornerRadius: 12))
-                                
-                                Text(genre.title)
-                                    .font(.subheadline)
-                                    .fontWeight(.medium)
-                                    .lineLimit(1)
+                                .frame(width: 200)
+                                .contentShape(Rectangle())
                             }
-                            .frame(width: 200)
-                            .contentShape(Rectangle())
                         }
                     }
                     .padding(.horizontal)
                 }
-                .frame(height: 220)
+                .frame(height: 160)
             }
         }
         .padding(.vertical)

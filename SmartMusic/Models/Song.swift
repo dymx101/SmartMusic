@@ -25,7 +25,27 @@ final class Song: Codable {
     
     // 添加计算属性来提供必要的URL
     var albumCover: String {
-        permalinkImage ?? "https://picsum.photos/200"
+        if let image = permalinkImage {
+            if image.contains("{size}") {
+                // 将 {size} 替换为 "500"
+                return image.replacingOccurrences(of: "{size}", with: "500")
+            }
+            return image
+        }
+        return "https://picsum.photos/200"
+    }
+    
+    // 添加一个新的计算属性，用于获取不同尺寸的封面
+    func albumCover(size: Int) -> String {
+        if let image = permalinkImage {
+            if image.contains("{size}") {
+                // 确保size在100-500之间
+                let validSize = min(max(size, 100), 500)
+                return image.replacingOccurrences(of: "{size}", with: String(validSize))
+            }
+            return image
+        }
+        return "https://picsum.photos/\(size)"
     }
     
     var url: String {
