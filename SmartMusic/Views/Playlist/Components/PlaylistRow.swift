@@ -37,7 +37,7 @@ struct PlaylistCover: View {
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .background(Color.gray.opacity(0.2))
         } else {
-            AsyncImage(url: URL(string: songs[0].albumCover)) { image in
+            AsyncImage(url: URL(string: songs[0].albumCover(size: .small))) { image in
                 image.resizable().aspectRatio(contentMode: .fill)
             } placeholder: {
                 Rectangle().foregroundColor(.gray.opacity(0.2))

@@ -23,29 +23,34 @@ final class Song: Codable {
     var playbackCount: Int?
     var tagList: String?
     
+    // 添加图片尺寸枚举
+    enum ImageSize {
+        case small
+        case large
+        
+        var value: String {
+            switch self {
+            case .small: return "small"
+            case .large: return "large"
+            }
+        }
+    }
+    
     // 添加计算属性来提供必要的URL
     var albumCover: String {
-        if let image = permalinkImage {
-            if image.contains("{size}") {
-                // 将 {size} 替换为 "500"
-                return image.replacingOccurrences(of: "{size}", with: "500")
-            }
-            return image
-        }
-        return "https://picsum.photos/200"
+        // 默认使用大尺寸
+        return albumCover(size: .large)
     }
     
     // 添加一个新的计算属性，用于获取不同尺寸的封面
-    func albumCover(size: Int) -> String {
+    func albumCover(size: ImageSize) -> String {
         if let image = permalinkImage {
             if image.contains("{size}") {
-                // 确保size在100-500之间
-                let validSize = min(max(size, 100), 500)
-                return image.replacingOccurrences(of: "{size}", with: String(validSize))
+                return image.replacingOccurrences(of: "{size}", with: size.value)
             }
             return image
         }
-        return "https://picsum.photos/\(size)"
+        return "https://picsum.photos/\(size == .small ? 200 : 500)"  // 保持默认图片的尺寸
     }
     
     var url: String {

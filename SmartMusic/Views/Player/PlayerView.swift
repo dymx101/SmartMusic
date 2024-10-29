@@ -38,7 +38,7 @@ struct PlayerView: View {
             
             // 封面
             if let song = viewModel.currentSong {
-                AsyncImage(url: URL(string: song.albumCover)) { image in
+                AsyncImage(url: URL(string: song.albumCover(size: .large))) { image in
                     image
                         .resizable()
                         .aspectRatio(contentMode: .fit)

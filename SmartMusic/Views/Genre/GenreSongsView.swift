@@ -44,6 +44,14 @@ struct GenreSongsView: View {
                 SongGridItem(song: song) {
                     playerViewModel.playSong(song)
                 }
+                .onAppear {
+                    // 加载更多数据
+                    if song == viewModel.songs.last {
+                        Task {
+                            await viewModel.fetchSongs()
+                        }
+                    }
+                }
             }
         }
         .padding()
@@ -81,7 +89,7 @@ struct SongGridItem: View {
     var body: some View {
         Button(action: onTap) {
             VStack(alignment: .leading, spacing: 8) {
-                AsyncImage(url: URL(string: song.albumCover)) { image in
+                AsyncImage(url: URL(string: song.albumCover(size: .large))) { image in
                     image
                         .resizable()
                         .aspectRatio(contentMode: .fill)

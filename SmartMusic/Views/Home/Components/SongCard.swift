@@ -6,7 +6,7 @@ struct SongCard: View {
     
     var body: some View {
         VStack(alignment: .leading) {
-            AsyncImage(url: URL(string: song.albumCover)) { image in
+            AsyncImage(url: URL(string: song.albumCover(size: .small))) { image in
                 image
                     .resizable()
                     .aspectRatio(contentMode: .fill)
