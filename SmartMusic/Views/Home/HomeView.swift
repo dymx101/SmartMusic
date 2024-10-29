@@ -186,7 +186,7 @@ struct HomeView: View {
     
     // 音乐类型部分
     private var genresSection: some View {
-        VStack(alignment: .leading) {
+        VStack(alignment: .leading, spacing: 16) {
             HStack {
                 Text("音乐类型")
                     .font(.title2)
@@ -202,25 +202,33 @@ struct HomeView: View {
                     .padding()
             } else {
                 ScrollView(.horizontal, showsIndicators: false) {
-                    LazyHStack(alignment: .top, spacing: 16) {
-                        let columns = viewModel.genres.chunked(into: 3)
-                        ForEach(Array(columns.enumerated()), id: \.offset) { index, chunk in
-                            VStack(alignment: .leading, spacing: 8) {
-                                ForEach(chunk) { genre in
-                                    GenreCard(genre: genre)
-                                        .frame(width: UIScreen.main.bounds.width / 3 - 32)
-                                        .frame(height: 70)
+                    LazyHStack(spacing: 12) {
+                        ForEach(viewModel.genres) { genre in
+                            VStack(spacing: 8) {
+                                AsyncImage(url: URL(string: genre.imageLargeLight)) { image in
+                                    image
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fill)
+                                } placeholder: {
+                                    Rectangle()
+                                        .foregroundColor(.gray.opacity(0.2))
                                 }
+                                .frame(height: 150)
+                                .frame(width: 180)
+                                .clipShape(RoundedRectangle(cornerRadius: 12))
                                 
-                                if chunk.count < 2 {
-                                    Spacer()
-                                }
+                                Text(genre.title)
+                                    .font(.subheadline)
+                                    .fontWeight(.medium)
+                                    .lineLimit(1)
                             }
+                            .frame(width: 200)
+                            .contentShape(Rectangle())
                         }
                     }
                     .padding(.horizontal)
                 }
-                .scrollTargetBehavior(.paging)
+                .frame(height: 220)
             }
         }
         .padding(.vertical)
