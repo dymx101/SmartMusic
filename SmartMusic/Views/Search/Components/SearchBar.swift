@@ -2,6 +2,7 @@ import SwiftUI
 
 struct SearchBar: View {
     @Binding var text: String
+    var onSubmit: () -> Void
     private let logger = LogService.shared
     
     var body: some View {
@@ -11,8 +12,8 @@ struct SearchBar: View {
             
             TextField("搜索歌曲、歌手", text: $text)
                 .textFieldStyle(PlainTextFieldStyle())
-                .onChange(of: text) { newValue in
-                    logger.debug("Search input changed: \(newValue)")
+                .onSubmit {
+                    onSubmit()
                 }
             
             if !text.isEmpty {

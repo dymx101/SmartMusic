@@ -123,9 +123,180 @@ class NetworkService {
     }
     
     // 搜索歌曲
-    func searchSongs(query: String) async throws -> [Song] {
+    func searchSongs(query: String, limit: Int = 20, offset: Int = 0) async throws -> [Song] {
         logger.info("Searching songs with query: \(query)")
-        return try await fetch("/music/search?q=\(query.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")")
+        
+        guard let url = URL(string: baseURL + "/music/soundcloud/search/") else {
+            logger.error("Invalid search URL")
+            throw NetworkError.invalidURL
+        }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue("application/json", forHTTPHeaderField: "accept")
+        request.setValue("hJEHv9Hx3xTxGNNEaOxvWeAFWeuWs21v48IEVfsLsMUBxVxrHPrYTMl1KIsS4tcI", forHTTPHeaderField: "X-CSRFTOKEN")
+        
+        let searchParams = ["q": query, "limit": limit, "offset": offset] as [String : Any]
+        request.httpBody = try? JSONSerialization.data(withJSONObject: searchParams)
+        
+        // 打印请求信息
+        logger.debug("Request URL: \(url.absoluteString)")
+        logger.debug("Request headers: \(request.allHTTPHeaderFields ?? [:])")
+        if let bodyData = request.httpBody,
+           let bodyString = String(data: bodyData, encoding: .utf8) {
+            logger.debug("Request body: \(bodyString)")
+        }
+        
+        let (data, response) = try await URLSession.shared.data(for: request)
+        
+        // 打印响应信息
+        guard let httpResponse = response as? HTTPURLResponse else {
+            logger.error("Response is not HTTPURLResponse")
+            throw NetworkError.invalidResponse
+        }
+        
+        logger.debug("Response status code: \(httpResponse.statusCode)")
+        logger.debug("Response headers: \(httpResponse.allHeaderFields)")
+        
+        // 打印响应数据
+        if let responseString = String(data: data, encoding: .utf8) {
+            logger.debug("Response data: \(responseString)")
+        }
+        
+        guard (200...299).contains(httpResponse.statusCode) else {
+            throw NetworkError.invalidResponse
+        }
+        
+        // 创建临时解码结构
+        struct TempSong: Codable {
+            let title: String
+            let artist: String
+            let album: String?
+            let genre: String?
+            let releaseDate: String?
+            let duration: Int
+            let songDescription: String?
+            let kind: String?
+            let license: String?
+            let permalink: String?
+            let permalinkUrl: String?
+            let permalinkImage: String?
+            let caption: String?
+            let downloadUrl: String?
+            let fullDuration: Int?
+            let likesCount: Int?
+            let playbackCount: Int?
+            let tagList: String?
+            
+            enum CodingKeys: String, CodingKey {
+                case title
+                case artist
+                case album
+                case genre
+                case releaseDate = "release_date"
+                case duration
+                case songDescription = "description"
+                case kind
+                case license
+                case permalink
+                case permalinkUrl = "permalink_url"
+                case permalinkImage = "permalink_image"
+                case caption
+                case downloadUrl = "download_url"
+                case fullDuration = "full_duration"
+                case likesCount = "likes_count"
+                case playbackCount = "playback_count"
+                case tagList = "tag_list"
+            }
+            
+        }
+        
+        do {
+            let decoder = JSONDecoder()
+            // 尝试解码并打印详细错误信息
+            do {
+                let tempSongs = try decoder.decode([TempSong].self, from: data)
+                logger.info("Successfully decoded \(tempSongs.count) songs")
+                
+                // 打印第一个 tempSong 的详细信息用于调试
+                if let firstSong = tempSongs.first {
+                    logger.debug("""
+                    First decoded TempSong:
+                    - Title: \(firstSong.title)
+                    - Artist: \(firstSong.artist)
+                    - PermalinkUrl: \(firstSong.permalinkUrl ?? "N/A")
+                    - Duration: \(firstSong.duration)
+                    """)
+                }
+                
+                // 转换为 Song 对象
+                let songs = tempSongs.enumerated().map { index, tempSong -> Song in
+                    // 基础ID从1000开始
+                    // offset 表示已经跳过的数量
+                    // index 是当前页中的索引
+                    let id = 1000 + offset*limit + index
+                    
+                    let song = Song(
+                        id: id,
+                        title: tempSong.title,
+                        artist: tempSong.artist,
+                        album: tempSong.album,
+                        genre: tempSong.genre,
+                        releaseDate: tempSong.releaseDate,
+                        duration: tempSong.duration,
+                        songDescription: tempSong.songDescription,
+                        kind: tempSong.kind,
+                        license: tempSong.license,
+                        permalink: tempSong.permalink,
+                        permalinkUrl: tempSong.permalinkUrl,
+                        permalinkImage: tempSong.permalinkImage,
+                        caption: tempSong.caption,
+                        downloadUrl: tempSong.downloadUrl,
+                        fullDuration: tempSong.fullDuration,
+                        likesCount: tempSong.likesCount,
+                        playbackCount: tempSong.playbackCount,
+                        tagList: tempSong.tagList
+                    )
+                    return song
+                }
+                
+                // 打印转换后的第一首歌信息用于调试
+                if let firstSong = songs.first {
+                    logger.debug("""
+                    First converted song:
+                    - ID: \(firstSong.id)
+                    - Title: \(firstSong.title)
+                    - Artist: \(firstSong.artist)
+                    - Duration: \(firstSong.duration)
+                    - PermalinkUrl: \(firstSong.permalinkUrl ?? "N/A")
+                    """)
+                }
+                
+                return songs
+                
+            } catch {
+                logger.error("Decoding error: \(error)")
+                if let decodingError = error as? DecodingError {
+                    switch decodingError {
+                    case .keyNotFound(let key, let context):
+                        logger.error("Key '\(key.stringValue)' not found: \(context.debugDescription)")
+                    case .valueNotFound(let type, let context):
+                        logger.error("Value of type '\(type)' not found: \(context.debugDescription)")
+                    case .typeMismatch(let type, let context):
+                        logger.error("Type '\(type)' mismatch: \(context.debugDescription)")
+                    case .dataCorrupted(let context):
+                        logger.error("Data corrupted: \(context.debugDescription)")
+                    @unknown default:
+                        logger.error("Unknown decoding error: \(error.localizedDescription)")
+                    }
+                }
+                throw NetworkError.decodingError
+            }
+        } catch {
+            logger.error("Network error: \(error.localizedDescription)")
+            throw NetworkError.serverError(error.localizedDescription)
+        }
     }
     
     // 获取歌曲详情
@@ -319,14 +490,23 @@ class NetworkService {
     func fetchGenreSongs(page: Int = 1, query: String) async throws -> [Song] {
         logger.info("Fetching songs for genre: \(query), page: \(page)")
         
-        // 处理查询参数中的特殊字符
-        let encodedQuery = query.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? query
-        let endpoint = "/music/soundcloud/genre/songs/?page=\(page)&query=\(encodedQuery)"
+        // 创建URLComponents来正确处理查询参数
+        var components = URLComponents(string: baseURL)
+        components?.path = "/music/soundcloud/genre/songs/"
         
-        guard let url = URL(string: baseURL + endpoint) else {
-            logger.error("Invalid URL: \(baseURL + endpoint)")
+        // 添加查询参数
+        components?.queryItems = [
+            URLQueryItem(name: "page", value: String(page)),
+            URLQueryItem(name: "query", value: query)
+        ]
+        
+        // 获取完整的URL
+        guard let url = components?.url else {
+            logger.error("Failed to construct URL with components")
             throw NetworkError.invalidURL
         }
+        
+        logger.debug("Constructed URL: \(url.absoluteString)")
         
         do {
             logger.debug("Making request to: \(url.absoluteString)")
@@ -391,9 +571,14 @@ class NetworkService {
                 let tempSongs = try decoder.decode([TempSong].self, from: data)
                 
                 // 将临时歌曲转换为正式的 Song 对象
-                let songs = tempSongs.map { tempSong -> Song in
+                let songs = tempSongs.enumerated().map { index, tempSong -> Song in
+                    // 基础ID从1000开始
+                    // offset 表示已经跳过的数量
+                    // index 是当前页中的索引
+                    let id = 1000 + page*30 + index
+                    
                     let song = Song(
-                        id: 0, // 临时 ID，将在 ViewModel 中被替换
+                        id: id,
                         title: tempSong.title,
                         artist: tempSong.artist,
                         album: tempSong.album,
