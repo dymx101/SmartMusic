@@ -1,0 +1,45 @@
+"app.name" = "智能音乐";
+"tab.home" = "首页";
+"tab.search" = "搜索";
+"tab.playlist" = "播放列表";
+"tab.profile" = "我的";
+
+"player.play" = "播放";
+"player.pause" = "暂停";
+"player.next" = "下一首";
+"player.previous" = "上一首";
+
+"playlist.create" = "创建播放列表";
+"playlist.delete" = "删除播放列表";
+"playlist.edit" = "编辑播放列表";
+"playlist.addSongs" = "添加歌曲";
+
+"search.placeholder" = "搜索歌曲、歌手、专辑...";
+"search.history" = "搜索历史";
+"search.clear" = "清除历史";
+"search.results" = "搜索结果";
+"search.noResults" = "未找到相关结果";
+
+"profile.favorites" = "我的收藏";
+"profile.history" = "播放历史";
+"profile.settings" = "设置";
+"profile.about" = "关于";
+"profile.edit" = "编辑";
+"profile.logout" = "退出登录";
+
+"settings.language" = "语言";
+"settings.theme" = "主题";
+"settings.notification" = "通知";
+"settings.privacy" = "隐私";
+
+"home.featured" = "精选推荐";
+"home.myFavorites" = "我的收藏";
+"home.genres" = "音乐类型";
+"home.moreRecommended" = "更多推荐";
+"home.viewAll" = "查看全部";
+"home.noFavorites" = "还没有收藏的歌曲";
+"home.noGenres" = "暂无音乐类型";
+
+"player.noSong" = "暂无播放歌曲";
+"player.unknownArtist" = "未知艺术家";
+"playlist.empty" = "暂无播放列表"; 

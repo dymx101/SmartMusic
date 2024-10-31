@@ -16,10 +16,10 @@ struct SearchView: View {
                 
                 if !viewModel.searchHistory.isEmpty {
                     HStack {
-                        Text("搜索历史")
+                        Text(NSLocalizedString("search.history", comment: ""))
                             .font(.headline)
                         Spacer()
-                        Button("清除") {
+                        Button(NSLocalizedString("search.clear", comment: "")) {
                             viewModel.clearHistory()
                         }
                         .foregroundColor(.red)
@@ -48,7 +48,7 @@ struct SearchView: View {
                 
                 Spacer()
             }
-            .navigationTitle("搜索")
+            .navigationTitle(NSLocalizedString("tab.search", comment: ""))
             .sheet(isPresented: $viewModel.showSearchResults) {
                 NavigationView {
                     SearchResultsView(

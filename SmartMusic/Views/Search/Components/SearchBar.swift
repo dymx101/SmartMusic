@@ -10,7 +10,7 @@ struct SearchBar: View {
             Image(systemName: "magnifyingglass")
                 .foregroundColor(.gray)
             
-            TextField("搜索歌曲、歌手", text: $text)
+            TextField(NSLocalizedString("search.placeholder", comment: ""), text: $text)
                 .textFieldStyle(PlainTextFieldStyle())
                 .onSubmit {
                     onSubmit()

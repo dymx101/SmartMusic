@@ -19,32 +19,32 @@ struct ProfileView: View {
                 // 功能区
                 Section {
                     NavigationLink(destination: FavoritesView(modelContext: modelContext)) {
-                        Label("我的收藏", systemImage: "heart.fill")
+                        Label(NSLocalizedString("profile.favorites", comment: ""), systemImage: "heart.fill")
                     }
                     
                     NavigationLink(destination: HistoryView(modelContext: modelContext)) {
-                        Label("播放历史", systemImage: "clock.fill")
+                        Label(NSLocalizedString("profile.history", comment: ""), systemImage: "clock.fill")
                     }
                 }
                 
                 // 设置区
                 Section {
                     NavigationLink(destination: SettingsView()) {
-                        Label("设置", systemImage: "gear")
+                        Label(NSLocalizedString("profile.settings", comment: ""), systemImage: "gear")
                     }
                     
                     Button(action: {
                         logger.info("User tapped logout button")
                     }) {
-                        Label("退出登录", systemImage: "rectangle.portrait.and.arrow.right")
+                        Label(NSLocalizedString("profile.logout", comment: ""), systemImage: "rectangle.portrait.and.arrow.right")
                             .foregroundColor(.red)
                     }
                 }
             }
-            .navigationTitle("我的")
+            .navigationTitle(NSLocalizedString("tab.profile", comment: ""))
             .toolbar {
                 Button(action: { viewModel.showEditProfile = true }) {
-                    Text("编辑")
+                    Text(NSLocalizedString("profile.edit", comment: ""))
                 }
             }
             .sheet(isPresented: $viewModel.showEditProfile) {

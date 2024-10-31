@@ -13,28 +13,27 @@ struct PlaylistView: View {
     var body: some View {
         NavigationView {
             List {
-                ForEach(viewModel.playlists) { playlist in
-                    NavigationLink(destination: PlaylistDetailView(playlist: playlist, modelContext: modelContext)) {
-                        PlaylistRow(playlist: playlist)
-                    }
-                    .onAppear {
-                        logger.debug("Displaying playlist: \(playlist.name)")
-                    }
-                }
-                .onDelete { indexSet in
-                    logger.info("Deleting playlists at indices: \(indexSet)")
-                    indexSet.forEach { index in
-                        viewModel.deletePlaylist(viewModel.playlists[index])
+                if viewModel.playlists.isEmpty {
+                    Text(NSLocalizedString("playlist.empty", comment: ""))
+                        .foregroundColor(.secondary)
+                } else {
+                    ForEach(viewModel.playlists) { playlist in
+                        NavigationLink(destination: PlaylistDetailView(playlist: playlist, modelContext: modelContext)) {
+                            PlaylistRow(playlist: playlist)
+                        }
+                        .onAppear {
+                            logger.debug("Displaying playlist: \(playlist.name)")
+                        }
                     }
                 }
             }
-            .navigationTitle("播放列表")
+            .navigationTitle(NSLocalizedString("tab.playlist", comment: ""))
             .toolbar {
                 Button(action: {
                     logger.info("User tapped create playlist button")
                     viewModel.showCreatePlaylist = true
                 }) {
-                    Image(systemName: "plus")
+                    Text(NSLocalizedString("playlist.create", comment: ""))
                 }
             }
             .sheet(isPresented: $viewModel.showCreatePlaylist) {

@@ -1,0 +1,45 @@
+"app.name" = "SmartMusic";
+"tab.home" = "Accueil";
+"tab.search" = "Rechercher";
+"tab.playlist" = "Playlist";
+"tab.profile" = "Profil";
+
+"player.play" = "Lecture";
+"player.pause" = "Pause";
+"player.next" = "Suivant";
+"player.previous" = "Précédent";
+
+"playlist.create" = "Créer une playlist";
+"playlist.delete" = "Supprimer la playlist";
+"playlist.edit" = "Modifier la playlist";
+"playlist.addSongs" = "Ajouter des titres";
+
+"search.placeholder" = "Rechercher des titres, artistes, albums...";
+"search.history" = "Historique de recherche";
+"search.clear" = "Effacer l'historique";
+"search.results" = "Résultats de recherche";
+"search.noResults" = "Aucun résultat trouvé";
+
+"profile.favorites" = "Mes favoris";
+"profile.history" = "Historique de lecture";
+"profile.settings" = "Paramètres";
+"profile.about" = "À propos";
+"profile.edit" = "Modifier";
+"profile.logout" = "Déconnexion";
+
+"settings.language" = "Langue";
+"settings.theme" = "Thème";
+"settings.notification" = "Notifications";
+"settings.privacy" = "Confidentialité";
+
+"home.featured" = "À la une";
+"home.myFavorites" = "Mes favoris";
+"home.genres" = "Genres";
+"home.moreRecommended" = "Plus de recommandations";
+"home.viewAll" = "Voir tout";
+"home.noFavorites" = "Aucun favori";
+"home.noGenres" = "Aucun genre";
+
+"player.noSong" = "Aucune chanson en cours";
+"player.unknownArtist" = "Artiste inconnu";
+"playlist.empty" = "Aucune playlist";

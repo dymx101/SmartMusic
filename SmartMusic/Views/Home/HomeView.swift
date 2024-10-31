@@ -32,7 +32,7 @@ struct HomeView: View {
                 }
                 .padding(.bottom, 60)
             }
-            .navigationTitle("SmartMusic")
+            .navigationTitle(NSLocalizedString("app.name", comment: ""))
             .refreshable {
                 logger.info("User triggered manual refresh")
                 await viewModel.fetchRecommendedSongs(forceRefresh: true)
@@ -81,14 +81,14 @@ struct HomeView: View {
     private var favoritesSection: some View {
         VStack(alignment: .leading) {
             HStack {
-                Text("我的收藏")
+                Text(NSLocalizedString("home.myFavorites", comment: ""))
                     .font(.title2)
                     .bold()
                 
                 Spacer()
                 
                 if !favoritesViewModel.favorites.isEmpty {
-                    NavigationLink("查看全部") {
+                    NavigationLink(NSLocalizedString("home.viewAll", comment: "")) {
                         FavoritesView(modelContext: modelContext)
                     }
                     .font(.subheadline)
@@ -97,7 +97,7 @@ struct HomeView: View {
             .padding(.horizontal)
             
             if favoritesViewModel.favorites.isEmpty {
-                Text("还没有收藏的歌曲")
+                Text(NSLocalizedString("home.noFavorites", comment: ""))
                     .foregroundColor(.secondary)
                     .padding()
             } else {
@@ -137,7 +137,7 @@ struct HomeView: View {
     private var genresSection: some View {
         VStack(alignment: .leading, spacing: 16) {
             HStack {
-                Text("音乐类型")
+                Text(NSLocalizedString("home.genres", comment: ""))
                     .font(.title2)
                     .bold()
                 
@@ -146,7 +146,7 @@ struct HomeView: View {
             .padding(.horizontal)
             
             if viewModel.genres.isEmpty {
-                Text("暂无音乐类型")
+                Text(NSLocalizedString("home.noGenres", comment: ""))
                     .foregroundColor(.secondary)
                     .padding()
             } else {
@@ -188,7 +188,7 @@ struct HomeView: View {
     // 更多推荐部分
     private var recommendedSongsSection: some View {
         VStack(alignment: .leading) {
-            Text("更多推荐")
+            Text(NSLocalizedString("home.moreRecommended", comment: ""))
                 .font(.title2)
                 .bold()
                 .padding(.horizontal)
