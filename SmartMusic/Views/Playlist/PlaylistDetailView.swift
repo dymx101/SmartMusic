@@ -36,19 +36,8 @@ struct PlaylistDetailView: View {
         .navigationTitle(playlist.name)
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
-                Menu {
-                    Button(action: { showAddSongSheet = true }) {
-                        Label("添加歌曲", systemImage: "plus")
-                    }
-                    
-                    Button(role: .destructive, action: {
-                        logger.info("User requested to delete playlist: \(playlist.name)")
-                        playlistViewModel.deletePlaylist(playlist)
-                    }) {
-                        Label("删除播放列表", systemImage: "trash")
-                    }
-                } label: {
-                    Image(systemName: "ellipsis")
+                Button(action: { showAddSongSheet = true }) {
+                    Image(systemName: "plus")
                 }
             }
         }
