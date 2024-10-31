@@ -65,10 +65,10 @@ struct HomeView: View {
         Group {
             if !viewModel.recommendedSongs.isEmpty {
                 FeaturedSongsCarousel(
-                    songs: Array(viewModel.recommendedSongs.prefix(6)),
+                    songs: viewModel.recommendedSongs,
                     onSongTap: { song in
                         logger.info("User tapped featured song: \(song.title)")
-                        playerViewModel.playSong(song)
+                        playerViewModel.playSong(song, fromQueue: viewModel.recommendedSongs)
                         showFullPlayer = true
                     }
                 )
@@ -109,7 +109,10 @@ struct HomeView: View {
                                 ForEach(chunk) { favorite in
                                     FavoriteSongRow(
                                         song: favorite.song,
-                                        onPlay: { playerViewModel.playSong(favorite.song) },
+                                        onPlay: { 
+                                            let favoriteSongs = favoritesViewModel.favorites.map { $0.song }
+                                            playerViewModel.playSong(favorite.song, fromQueue: favoriteSongs)
+                                        },
                                         onRemove: { favoritesViewModel.removeFavorite(favorite) }
                                     )
                                     .frame(width: UIScreen.main.bounds.width - 32)
@@ -191,12 +194,15 @@ struct HomeView: View {
                 .padding(.horizontal)
             
             LazyVStack(spacing: 8) {
-                ForEach(Array(viewModel.recommendedSongs.dropFirst(6))) { song in
+                // 获取除了前6首以外的推荐歌曲
+                let remainingSongs = Array(viewModel.recommendedSongs.dropFirst(6))
+                ForEach(remainingSongs) { song in
                     SongListRow(
                         song: song,
                         onPlay: {
                             logger.info("Playing song: \(song.title)")
-                            playerViewModel.playSong(song)
+                            // 使用剩余的推荐歌曲作为播放队列
+                            playerViewModel.playSong(song, fromQueue: remainingSongs)
                         },
                         modelContext: modelContext
                     )
@@ -207,7 +213,7 @@ struct HomeView: View {
     }
 }
 
-// 添加数组扩展来支持分块
+// 加数组扩展来支持分块
 extension Array {
     func chunked(into size: Int) -> [[Element]] {
         return stride(from: 0, to: count, by: size).map {

@@ -7,6 +7,7 @@ class AudioPlayer: ObservableObject {
     static let shared = AudioPlayer()
     private var player: AVPlayer?
     private let logger = LogService.shared
+    private let playbackQueue = PlaybackQueue.shared
     
     @Published var isPlaying = false
     @Published var currentTime: Double = 0
@@ -24,7 +25,11 @@ class AudioPlayer: ObservableObject {
         self.modelContext = context
     }
     
-    func play(_ song: Song) {
+    func play(_ song: Song, queue: [Song]? = nil, startIndex: Int = 0) {
+        if let queue = queue {
+            playbackQueue.setQueue(songs: queue, startIndex: startIndex)
+        }
+        
         Task {
             do {
                 // 先获取真实的播放地址
@@ -76,6 +81,14 @@ class AudioPlayer: ObservableObject {
             } catch {
                 logger.error("Failed to get real play URL: \(error.localizedDescription)")
             }
+        }
+        
+        NotificationCenter.default.addObserver(
+            forName: .AVPlayerItemDidPlayToEndTime,
+            object: player?.currentItem,
+            queue: .main
+        ) { [weak self] _ in
+            self?.handlePlaybackFinished()
         }
     }
     
@@ -156,5 +169,24 @@ class AudioPlayer: ObservableObject {
         }
         
         MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
+    }
+    
+    func playNext() {
+        logger.info("Playing next song")
+        if let nextSong = playbackQueue.getNextSong() {
+            play(nextSong)
+        }
+    }
+    
+    func playPrevious() {
+        logger.info("Playing previous song")
+        if let previousSong = playbackQueue.getPreviousSong() {
+            play(previousSong)
+        }
+    }
+    
+    private func handlePlaybackFinished() {
+        logger.info("Current song finished playing")
+        playNext()
     }
 }

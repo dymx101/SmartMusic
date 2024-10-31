@@ -85,7 +85,7 @@ struct PlayerView: View {
             
             // 控制按钮
             HStack(spacing: 40) {
-                Button(action: {}) {
+                Button(action: { viewModel.playPrevious() }) {
                     Image(systemName: "backward.fill")
                         .font(.title)
                 }
@@ -95,10 +95,16 @@ struct PlayerView: View {
                         .font(.system(size: 65))
                 }
                 
-                Button(action: {}) {
+                Button(action: { viewModel.playNext() }) {
                     Image(systemName: "forward.fill")
                         .font(.title)
                 }
+            }
+            
+            // 添加播放模式切换按钮
+            Button(action: { viewModel.togglePlayMode() }) {
+                Image(systemName: viewModel.playModeIcon)
+                    .font(.title2)
             }
             .padding(.bottom, 40)
         }

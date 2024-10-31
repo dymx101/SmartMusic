@@ -14,10 +14,13 @@ struct PlaylistDetailView: View {
     var body: some View {
         List {
             ForEach(playlist.songs) { song in
-                SongRow(song: song, onPlay: {
-                    logger.info("Playing song '\(song.title)' from playlist '\(playlist.name)'")
-                    viewModel.playSong(song)
-                })
+                SongRow(
+                    song: song,
+                    onPlay: {
+                        logger.info("Playing song '\(song.title)' from playlist '\(playlist.name)'")
+                        viewModel.playSong(song, fromQueue: playlist.songs)
+                    }
+                )
             }
         }
         .navigationTitle(playlist.name)

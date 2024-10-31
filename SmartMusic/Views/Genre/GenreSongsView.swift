@@ -34,82 +34,37 @@ struct GenreSongsView: View {
         }
     }
     
-    // 网格视图
     private var gridContent: some View {
         LazyVGrid(columns: [
-            GridItem(.flexible()),
-            GridItem(.flexible())
+            GridItem(.adaptive(minimum: 150), spacing: 16)
         ], spacing: 16) {
-            ForEach(viewModel.songs, id: \.id) { song in
-                SongGridItem(song: song) {
-                    playerViewModel.playSong(song)
-                }
-                .onAppear {
-                    // 加载更多数据
-                    if song == viewModel.songs.last {
-                        Task {
-                            await viewModel.fetchSongs()
-                        }
+            ForEach(viewModel.songs) { song in
+                SongCard(
+                    song: song,
+                    onPlay: {
+                        logger.info("Playing song from grid: \(song.title)")
+                        playerViewModel.playSong(song, fromQueue: viewModel.songs)
                     }
-                }
+                )
             }
         }
         .padding()
     }
     
-    // 列表视图
     private var listContent: some View {
         LazyVStack(spacing: 8) {
-            ForEach(viewModel.songs, id: \.id) { song in
+            ForEach(viewModel.songs) { song in
                 SongListRow(
                     song: song,
                     onPlay: {
-                        playerViewModel.playSong(song)
+                        logger.info("Playing song from list: \(song.title)")
+                        playerViewModel.playSong(song, fromQueue: viewModel.songs)
                     },
                     modelContext: modelContext
                 )
                 .padding(.horizontal)
-                .onAppear {
-                    if song == viewModel.songs.last {
-                        Task {
-                            await viewModel.fetchSongs()
-                        }
-                    }
-                }
             }
         }
+        .padding(.vertical)
     }
 }
-
-// 网格项组件
-struct SongGridItem: View {
-    let song: Song
-    let onTap: () -> Void
-    
-    var body: some View {
-        Button(action: onTap) {
-            VStack(alignment: .leading, spacing: 8) {
-                AsyncImage(url: URL(string: song.albumCover(size: .large))) { image in
-                    image
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                } placeholder: {
-                    Rectangle()
-                        .foregroundColor(.gray.opacity(0.2))
-                }
-                .frame(height: 160)
-                .clipShape(RoundedRectangle(cornerRadius: 12))
-                
-                Text(song.title)
-                    .font(.subheadline)
-                    .lineLimit(2)
-                    .foregroundColor(.primary)
-                
-                Text(song.artist)
-                    .font(.caption)
-                    .foregroundColor(.secondary)
-                    .lineLimit(1)
-            }
-        }
-    }
-} 

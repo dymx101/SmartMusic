@@ -19,7 +19,8 @@ struct FavoritesView: View {
                     song: favorite.song,
                     onPlay: {
                         logger.info("Playing favorite song: \(favorite.song.title)")
-                        playerViewModel.playSong(favorite.song)
+                        let favoriteSongs = viewModel.favorites.map { $0.song }
+                        playerViewModel.playSong(favorite.song, fromQueue: favoriteSongs)
                     },
                     onRemove: {
                         logger.info("Removing song from favorites: \(favorite.song.title)")

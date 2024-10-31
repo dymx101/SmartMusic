@@ -40,14 +40,16 @@ struct MiniPlayerView: View {
                     
                     Spacer()
                     
-                    Button(action: { viewModel.togglePlayPause() }) {
-                        Image(systemName: viewModel.isPlaying ? "pause.fill" : "play.fill")
-                            .font(.title3)
-                    }
-                    
-                    Button(action: {}) {
-                        Image(systemName: "forward.fill")
-                            .font(.title3)
+                    HStack(spacing: 20) {
+                        Button(action: { viewModel.togglePlayPause() }) {
+                            Image(systemName: viewModel.isPlaying ? "pause.fill" : "play.fill")
+                                .font(.title3)
+                        }
+                        
+                        Button(action: { viewModel.playNext() }) {
+                            Image(systemName: "forward.fill")
+                                .font(.title3)
+                        }
                     }
                 }
                 .padding(.horizontal)

@@ -19,7 +19,8 @@ struct HistoryView: View {
                     history: history,
                     onPlay: {
                         logger.info("Playing song from history: \(history.song.title)")
-                        playerViewModel.playSong(history.song)
+                        let historySongs = viewModel.history.map { $0.song }
+                        playerViewModel.playSong(history.song, fromQueue: historySongs)
                     }
                 )
             }

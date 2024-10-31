@@ -2,11 +2,11 @@ import SwiftUI
 
 struct SongCard: View {
     let song: Song
-    private let logger = LogService.shared
+    let onPlay: () -> Void
     
     var body: some View {
-        VStack(alignment: .leading) {
-            AsyncImage(url: URL(string: song.albumCover(size: .small))) { image in
+        VStack {
+            AsyncImage(url: URL(string: song.albumCover)) { image in
                 image
                     .resizable()
                     .aspectRatio(contentMode: .fill)
@@ -14,11 +14,8 @@ struct SongCard: View {
                 Rectangle()
                     .foregroundColor(.gray.opacity(0.2))
             }
-            .frame(width: 150, height: 150)
-            .clipShape(RoundedRectangle(cornerRadius: 8))
-            .onAppear {
-                logger.debug("Loading album cover for song card: \(song.title)")
-            }
+            .frame(height: 150)
+            .clipShape(RoundedRectangle(cornerRadius: 12))
             
             VStack(alignment: .leading, spacing: 4) {
                 Text(song.title)
@@ -30,10 +27,13 @@ struct SongCard: View {
                     .foregroundColor(.secondary)
                     .lineLimit(1)
             }
-            .frame(width: 150)
-        }
-        .onTapGesture {
-            logger.info("User tapped song card: \(song.title)")
+            .frame(maxWidth: .infinity, alignment: .leading)
+            
+            Button(action: onPlay) {
+                Image(systemName: "play.fill")
+                    .font(.title3)
+            }
+            .frame(maxWidth: .infinity, alignment: .trailing)
         }
     }
-}
+} 

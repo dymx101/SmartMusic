@@ -2,25 +2,27 @@ import SwiftUI
 import SwiftData
 
 struct SearchResultsView: View {
-    let initialSongs: [Song]
-    let searchQuery: String
+    // MARK: - Properties
+    @Environment(\.modelContext) private var modelContext
+    @StateObject private var playerViewModel: PlayerViewModel
+    @State private var showFullPlayer = false
     @State private var songs: [Song]
     @State private var currentPage = 1
     @State private var isLoadingMore = false
     @State private var hasMorePages = true
-    @Environment(\.modelContext) private var modelContext
-    @StateObject private var playerViewModel: PlayerViewModel
-    @State private var showFullPlayer = false
+    
+    private let searchQuery: String
     private let logger = LogService.shared
     private let pageSize = 20
     
+    // MARK: - Initialization
     init(songs: [Song], searchQuery: String, modelContext: ModelContext) {
-        self.initialSongs = songs
         self.searchQuery = searchQuery
         _songs = State(initialValue: songs)
         _playerViewModel = StateObject(wrappedValue: PlayerViewModel(modelContext: modelContext))
     }
     
+    // MARK: - Body
     var body: some View {
         ScrollView {
             LazyVStack(spacing: 8) {
@@ -28,19 +30,14 @@ struct SearchResultsView: View {
                     SongListRow(
                         song: song,
                         onPlay: {
-                            logger.info("Playing song: \(song.title)")
-                            playerViewModel.playSong(song)
+                            playerViewModel.playSong(song, fromQueue: songs)
+                            showFullPlayer = true
                         },
                         modelContext: modelContext
                     )
                     .padding(.horizontal)
                     .onAppear {
-                        // 当显示最后一个item时加载更多
-                        if song.id == songs.last?.id && !isLoadingMore && hasMorePages {
-                            Task {
-                                await loadMore()
-                            }
-                        }
+                        checkAndLoadMore(for: song)
                     }
                 }
                 
@@ -57,6 +54,15 @@ struct SearchResultsView: View {
         }
     }
     
+    // MARK: - Helper Methods
+    private func checkAndLoadMore(for song: Song) {
+        if song.id == songs.last?.id && !isLoadingMore && hasMorePages {
+            Task {
+                await loadMore()
+            }
+        }
+    }
+    
     private func loadMore() async {
         guard !isLoadingMore && hasMorePages else { return }
         
@@ -70,7 +76,6 @@ struct SearchResultsView: View {
                 offset: (nextPage - 1) * pageSize
             )
             
-            // 在主线程更新UI
             await MainActor.run {
                 if !newSongs.isEmpty {
                     songs.append(contentsOf: newSongs)
