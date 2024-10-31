@@ -10,6 +10,10 @@ class PlaylistViewModel: ObservableObject {
     private let modelContext: ModelContext
     private let logger = LogService.shared
     
+    var context: ModelContext {
+        modelContext
+    }
+    
     init(modelContext: ModelContext) {
         self.modelContext = modelContext
         fetchPlaylists()

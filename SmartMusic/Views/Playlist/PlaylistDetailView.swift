@@ -4,11 +4,14 @@ import SwiftData
 struct PlaylistDetailView: View {
     let playlist: Playlist
     @StateObject private var viewModel: PlayerViewModel
+    @StateObject private var playlistViewModel: PlaylistViewModel
+    @State private var showAddSongSheet = false
     private let logger = LogService.shared
     
     init(playlist: Playlist, modelContext: ModelContext) {
         self.playlist = playlist
         _viewModel = StateObject(wrappedValue: PlayerViewModel(modelContext: modelContext))
+        _playlistViewModel = StateObject(wrappedValue: PlaylistViewModel(modelContext: modelContext))
     }
     
     var body: some View {
@@ -21,22 +24,36 @@ struct PlaylistDetailView: View {
                         viewModel.playSong(song, fromQueue: playlist.songs)
                     }
                 )
+                .swipeActions(edge: .trailing) {
+                    Button(role: .destructive) {
+                        playlistViewModel.removeSongFromPlaylist(song, playlist: playlist)
+                    } label: {
+                        Label("删除", systemImage: "trash")
+                    }
+                }
             }
         }
         .navigationTitle(playlist.name)
         .toolbar {
-            Menu {
-                Button(role: .destructive, action: {
-                    logger.info("User requested to delete playlist: \(playlist.name)")
-                }) {
-                    Label("删除播放列表", systemImage: "trash")
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Menu {
+                    Button(action: { showAddSongSheet = true }) {
+                        Label("添加歌曲", systemImage: "plus")
+                    }
+                    
+                    Button(role: .destructive, action: {
+                        logger.info("User requested to delete playlist: \(playlist.name)")
+                        playlistViewModel.deletePlaylist(playlist)
+                    }) {
+                        Label("删除播放列表", systemImage: "trash")
+                    }
+                } label: {
+                    Image(systemName: "ellipsis")
                 }
-            } label: {
-                Image(systemName: "ellipsis")
             }
         }
-        .onAppear {
-            logger.info("Opened playlist: \(playlist.name)")
+        .sheet(isPresented: $showAddSongSheet) {
+            AddSongsSheet(playlist: playlist, viewModel: playlistViewModel)
         }
     }
 }
