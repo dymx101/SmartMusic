@@ -11,7 +11,7 @@ class PlayerViewModel: ObservableObject {
     @Published var isFavorite = false
     
     private let audioPlayer = AudioPlayer.shared
-    private let playbackQueue = PlaybackQueue.shared
+    var playbackQueue: PlaybackQueue { PlaybackQueue.shared }
     private let logger = LogService.shared
     private let modelContext: ModelContext
     private var cancellables = Set<AnyCancellable>()
