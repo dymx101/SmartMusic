@@ -5,6 +5,7 @@ struct MiniPlayerView: View {
     @Environment(\.modelContext) private var modelContext
     @StateObject private var viewModel: PlayerViewModel
     @State private var showFullPlayer = false
+    @State private var showPlaylist = false
     
     init(modelContext: ModelContext) {
         _viewModel = StateObject(wrappedValue: PlayerViewModel(modelContext: modelContext))
@@ -41,13 +42,30 @@ struct MiniPlayerView: View {
                     Spacer()
                     
                     HStack(spacing: 20) {
-                        Button(action: { viewModel.togglePlayPause() }) {
-                            Image(systemName: viewModel.isPlaying ? "pause.fill" : "play.fill")
-                                .font(.title3)
+                        ZStack {
+                            Circle()
+                                .stroke(Color.gray.opacity(0.2), lineWidth: 2)
+                                .frame(width: 32, height: 32)
+                            
+                            Circle()
+                                .trim(from: 0, to: viewModel.currentTime / viewModel.duration)
+                                .stroke(Color.blue, lineWidth: 2)
+                                .frame(width: 32, height: 32)
+                                .rotationEffect(.degrees(-90))
+                            
+                            Button(action: { viewModel.togglePlayPause() }) {
+                                Image(systemName: viewModel.isPlaying ? "pause.fill" : "play.fill")
+                                    .font(.title3)
+                            }
                         }
                         
                         Button(action: { viewModel.playNext() }) {
-                            Image(systemName: "forward.fill")
+                            Image(systemName: "forward.end.fill")
+                                .font(.title3)
+                        }
+                        
+                        Button(action: { showPlaylist.toggle() }) {
+                            Image(systemName: "music.note.list")
                                 .font(.title3)
                         }
                     }
@@ -61,6 +79,10 @@ struct MiniPlayerView: View {
             }
             .sheet(isPresented: $showFullPlayer) {
                 PlayerView(modelContext: modelContext)
+            }
+            .sheet(isPresented: $showPlaylist) {
+                PlaylistSheet(viewModel: viewModel)
+                    .presentationDetents([.fraction(0.67)])
             }
         }
     }
