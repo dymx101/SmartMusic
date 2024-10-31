@@ -22,43 +22,27 @@ struct PlayerView: View {
                 
                 Spacer()
                 
-                Button(action: { showPlaylist.toggle() }) {
-                    Image(systemName: "music.note.list")
+                Button(action: { viewModel.toggleFavorite() }) {
+                    Image(systemName: viewModel.isFavorite ? "heart.fill" : "heart")
                         .font(.title2)
+                        .foregroundColor(viewModel.isFavorite ? .red : .primary)
                 }
             }
             .padding(.horizontal)
             
             Spacer()
             
-            // 唱片旋转动画
-            ZStack {
-                Circle()
-                    .fill(.gray.opacity(0.1))
-                    .frame(width: 280, height: 280)
-                
-                if let song = viewModel.currentSong {
-                    AsyncImage(url: URL(string: song.albumCover)) { image in
-                        image
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                    } placeholder: {
-                        Color.gray.opacity(0.2)
-                    }
-                    .frame(width: 250, height: 250)
-                    .clipShape(Circle())
-                    .rotationEffect(.degrees(viewModel.isPlaying ? 360 : 0))
-                    .animation(.linear(duration: 20).repeatForever(autoreverses: false), 
-                             value: viewModel.isPlaying)
+            // 专辑封面
+            if let song = viewModel.currentSong {
+                AsyncImage(url: URL(string: song.albumCover)) { image in
+                    image
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                } placeholder: {
+                    Color.gray.opacity(0.2)
                 }
-                
-                // 唱臂
-                Image("tonearm")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 100)
-                    .rotationEffect(.degrees(viewModel.isPlaying ? -30 : -10))
-                    .offset(x: 80, y: -80)
+                .frame(width: 280, height: 280)
+                .cornerRadius(20)
             }
             
             Spacer()
@@ -94,10 +78,9 @@ struct PlayerView: View {
             
             // 控制按钮
             HStack(spacing: 40) {
-                Button(action: { viewModel.toggleFavorite() }) {
-                    Image(systemName: viewModel.isFavorite ? "heart.fill" : "heart")
+                Button(action: { viewModel.togglePlayMode() }) {
+                    Image(systemName: viewModel.playModeIcon)
                         .font(.title2)
-                        .foregroundColor(viewModel.isFavorite ? .red : .primary)
                 }
                 
                 Button(action: { viewModel.playPrevious() }) {
@@ -115,8 +98,8 @@ struct PlayerView: View {
                         .font(.title)
                 }
                 
-                Button(action: { viewModel.togglePlayMode() }) {
-                    Image(systemName: viewModel.playModeIcon)
+                Button(action: { showPlaylist.toggle() }) {
+                    Image(systemName: "music.note.list")
                         .font(.title2)
                 }
             }
