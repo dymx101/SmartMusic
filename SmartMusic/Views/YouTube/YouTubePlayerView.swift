@@ -1,5 +1,4 @@
 import SwiftUI
-import AVKit
 
 struct YouTubePlayerView: View {
     let videoId: String
@@ -11,14 +10,9 @@ struct YouTubePlayerView: View {
             Color.black.edgesIgnoringSafeArea(.all)
             
             VStack(spacing: 0) {
-                // 视频播放器
-                if let player = playerViewModel.player {
-                    VideoPlayer(player: player)
-                        .frame(height: UIScreen.main.bounds.width * 9/16)
-                } else {
-                    ProgressView()
-                        .frame(height: UIScreen.main.bounds.width * 9/16)
-                }
+                // YouTube 播放器
+                YouTubeWebView(videoId: videoId)
+                    .frame(height: UIScreen.main.bounds.width * 9/16)
                 
                 // 视频信息
                 ScrollView {
@@ -31,28 +25,6 @@ struct YouTubePlayerView: View {
                             .font(.subheadline)
                             .foregroundColor(.secondary)
                             .padding(.horizontal)
-                        
-                        Divider()
-                        
-                        // 控制按钮
-                        HStack(spacing: 40) {
-                            Button(action: playerViewModel.togglePlayPause) {
-                                Image(systemName: playerViewModel.isPlaying ? "pause.fill" : "play.fill")
-                                    .font(.title2)
-                            }
-                            
-                            Button(action: playerViewModel.replay10Seconds) {
-                                Image(systemName: "gobackward.10")
-                                    .font(.title2)
-                            }
-                            
-                            Button(action: playerViewModel.forward10Seconds) {
-                                Image(systemName: "goforward.10")
-                                    .font(.title2)
-                            }
-                        }
-                        .padding()
-                        .frame(maxWidth: .infinity)
                         
                         Divider()
                         
@@ -78,9 +50,6 @@ struct YouTubePlayerView: View {
         }
         .onAppear {
             playerViewModel.loadVideo(videoId: videoId)
-        }
-        .onDisappear {
-            playerViewModel.cleanup()
         }
     }
 } 
