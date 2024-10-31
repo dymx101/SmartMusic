@@ -1,11 +1,11 @@
 import Foundation
 
-enum NetworkError: Error {
-    case invalidURL
-    case invalidResponse
-    case decodingError
-    case serverError(String)
-}
+//enum NetworkError: Error {
+//    case invalidURL
+//    case invalidResponse
+//    case decodingError
+//    case serverError(String)
+//}
 
 // 定义API响应的数据结构
 struct APIResponse<T: Codable>: Codable {

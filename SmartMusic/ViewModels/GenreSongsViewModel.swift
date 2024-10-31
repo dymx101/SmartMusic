@@ -84,6 +84,8 @@ class GenreSongsViewModel: ObservableObject {
             case .serverError(let message):
                 errorMessage = "服务器错误: \(message)"
                 logger.error("Server error for genre: \(genreTitle) - \(message)")
+            case .noData:
+                errorMessage = "没有数据"
             }
         } else {
             errorMessage = "未知错误: \(error.localizedDescription)"

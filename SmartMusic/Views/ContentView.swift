@@ -17,6 +17,11 @@ struct ContentView: View {
                         Label("搜索", systemImage: "magnifyingglass")
                     }
                 
+                YouTubeMusicView()
+                    .tabItem {
+                        Label("YouTube", systemImage: "play.square.fill")
+                    }
+                
                 PlaylistView(modelContext: modelContext)
                     .tabItem {
                         Label("播放列表", systemImage: "music.note.list")
@@ -28,7 +33,7 @@ struct ContentView: View {
                     }
             }
             .safeAreaInset(edge: .bottom) {
-                Color.clear.frame(height: 60) // 为底部播放器预留空间
+                Color.clear.frame(height: 60)
             }
             
             VStack(spacing: 0) {
@@ -37,7 +42,6 @@ struct ContentView: View {
                 
                 Divider()
                 
-                // TabBar 的高度
                 Color.clear
                     .frame(height: UITabBarController().tabBar.frame.height)
             }
