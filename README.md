@@ -70,4 +70,4 @@ SmartMusic/
 
 ## 联系方式
 
-作者邮箱 - your.email@example.com
+作者邮箱 - fx0883@qq.com
