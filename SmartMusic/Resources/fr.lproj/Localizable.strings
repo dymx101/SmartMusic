@@ -3,6 +3,7 @@
 "tab.search" = "Rechercher";
 "tab.playlist" = "Playlist";
 "tab.profile" = "Profil";
+"tab.youtube" = "YouTube";
 
 "player.play" = "Lecture";
 "player.pause" = "Pause";
@@ -13,6 +14,9 @@
 "playlist.delete" = "Supprimer la playlist";
 "playlist.edit" = "Modifier la playlist";
 "playlist.addSongs" = "Ajouter des titres";
+"playlist.count" = "titres";
+"playlist.create.name" = "Nom de la playlist";
+"playlist.create.title" = "Créer une playlist";
 
 "search.placeholder" = "Rechercher des titres, artistes, albums...";
 "search.history" = "Historique de recherche";
@@ -26,11 +30,23 @@
 "profile.about" = "À propos";
 "profile.edit" = "Modifier";
 "profile.logout" = "Déconnexion";
+"profile.playlists" = "Mes playlists";
 
 "settings.language" = "Langue";
 "settings.theme" = "Thème";
 "settings.notification" = "Notifications";
 "settings.privacy" = "Confidentialité";
+"settings.title" = "Paramètres";
+"settings.playback.title" = "Paramètres de lecture";
+"settings.playback.background" = "Lecture en arrière-plan";
+"settings.playback.quality" = "Haute qualité";
+"settings.playback.autoplay" = "Lecture automatique";
+"settings.about.title" = "À propos";
+"settings.about.version" = "Version";
+"settings.about.privacy" = "Politique de confidentialité";
+"settings.about.privacy.content" = "Politique de confidentialité\n\n1. Collecte d'informations\nNous collectons les informations que vous nous fournissez directement, notamment :\n- Informations du compte\n- Données d'utilisation\n- Informations sur l'appareil\n\n2. Utilisation des informations\nNous utilisons les informations collectées pour :\n- Fournir et maintenir les services\n- Améliorer l'expérience utilisateur\n- Envoyer des notifications\n\n3. Partage d'informations\nNous ne vendons pas vos informations personnelles. Nous pouvons partager des informations avec :\n- Les fournisseurs de services\n- Les obligations légales\n\n4. Sécurité des données\nNous mettons en œuvre des mesures de sécurité pour protéger vos informations\n\n5. Vos droits\nVous avez le droit de :\n- Accéder à vos données\n- Corriger vos données\n- Supprimer vos données\n\n6. Nous contacter\nPour les questions de confidentialité : privacy@smartmusic.com";
+"settings.about.terms" = "Conditions d'utilisation";
+"settings.about.terms.content" = "Conditions d'utilisation\n\n1. Acceptation des conditions\nEn utilisant SmartMusic, vous acceptez ces conditions.\n\n2. Compte utilisateur\n- Vous êtes responsable de la sécurité de votre compte\n- Vous devez avoir 13 ans ou plus\n\n3. Contenu utilisateur\n- Vous conservez vos droits sur votre contenu\n- Vous nous accordez une licence d'utilisation\n\n4. Activités interdites\n- Pas de contenu illégal\n- Pas de harcèlement\n- Pas d'accès non autorisé\n\n5. Modifications du service\nNous pouvons modifier ou interrompre les services\n\n6. Limitation de responsabilité\nService fourni 'en l'état'\n\n7. Loi applicable\nRégi par les lois applicables\n\n8. Contact\nQuestions : support@smartmusic.com";
 
 "home.featured" = "À la une";
 "home.myFavorites" = "Mes favoris";
@@ -48,3 +64,16 @@
 "common.done" = "Terminé";
 "favorites.empty.title" = "Aucun favori";
 "favorites.empty.description" = "Vous n'avez pas encore ajouté de titres aux favoris";
+
+"youtube.trending" = "Tendances";
+"youtube.category.all" = "Tout";
+"youtube.category.music" = "Musique";
+"youtube.category.live" = "Direct";
+"youtube.category.cover" = "Reprise";
+"youtube.category.mv" = "Clip";
+"youtube.search.placeholder" = "Rechercher des vidéos";
+"youtube.music" = "Musique";
+"youtube.player.title" = "En lecture";
+"youtube.error.loading" = "Échec du chargement";
+"youtube.error.playback" = "Erreur de lecture";
+"youtube.refresh" = "Actualiser";

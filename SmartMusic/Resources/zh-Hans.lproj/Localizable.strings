@@ -96,3 +96,7 @@
 "settings.about.privacy.content" = "隐私政策\n\n1. 信息收集\n我们收集您直接提供给我们的信息，包括：\n- 账户信息\n- 使用数据\n- 设备信息\n\n2. 信息使用方式\n我们使用收集的信息用于：\n- 提供和维护服务\n- 改善用户体验\n- 发送通知\n\n3. 信息共享\n我们不会出售您的个人信息。我们可能与以下方共享信息：\n- 服务提供商\n- 法律要求\n\n4. 数据安全\n我们实施安全措施保护您的信息\n\n5. 您的权利\n您有权：\n- 访问您的数据\n- 更正您的数据\n- 删除您的数据\n\n6. 联系我们\n隐私问题请联系：privacy@smartmusic.com";
 "settings.about.terms" = "用户协议";
 "settings.about.terms.content" = "用户协议\n\n1. 协议接受\n使用SmartMusic即表示您同意本协议。\n\n2. 用户账户\n- 您需要负责账户安全\n- 使用者年龄需满13岁\n\n3. 用户内容\n- 您保留内容权利\n- 授予我们使用许可\n\n4. 禁止行为\n- 禁止非法内容\n- 禁止骚扰行为\n- 禁止未授权访问\n\n5. 服务修改\n我们可能修改或终止服务\n\n6. 责任限制\n服务按\"现状\"提供\n\n7. 适用法律\n受适用法律管辖\n\n8. 联系方式\n问题咨询：support@smartmusic.com";
+
+/* Missing items */
+"playlist.count" = "首歌曲";
+"profile.playlists" = "我的歌单";

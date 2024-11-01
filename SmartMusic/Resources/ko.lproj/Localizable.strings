@@ -3,6 +3,7 @@
 "tab.search" = "검색";
 "tab.playlist" = "재생목록";
 "tab.profile" = "프로필";
+"tab.youtube" = "YouTube";
 
 "player.play" = "재생";
 "player.pause" = "일시정지";
@@ -13,6 +14,9 @@
 "playlist.delete" = "재생목록 삭제";
 "playlist.edit" = "재생목록 편집";
 "playlist.addSongs" = "노래 추가";
+"playlist.count" = "곡";
+"playlist.create.name" = "재생목록 이름";
+"playlist.create.title" = "재생목록 만들기";
 
 "search.placeholder" = "노래, 아티스트, 앨범 검색...";
 "search.history" = "검색 기록";
@@ -26,11 +30,23 @@
 "profile.about" = "정보";
 "profile.edit" = "편집";
 "profile.logout" = "로그아웃";
+"profile.playlists" = "내 노래 목록";
 
 "settings.language" = "언어";
 "settings.theme" = "테마";
 "settings.notification" = "알림";
 "settings.privacy" = "개인정보";
+"settings.title" = "설정";
+"settings.playback.title" = "재생 설정";
+"settings.playback.background" = "백그라운드 재생";
+"settings.playback.quality" = "고음질";
+"settings.playback.autoplay" = "자동 재생";
+"settings.about.title" = "정보";
+"settings.about.version" = "버전";
+"settings.about.privacy" = "개인정보 처리방침";
+"settings.about.privacy.content" = "개인정보 처리방침\n\n1. 정보 수집\n당사는 다음과 같은 정보를 수집합니다:\n- 계정 정보\n- 사용 데이터\n- 기기 정보\n\n2. 정보 사용 방법\n수집된 정보는 다음 목적으로 사용됩니다:\n- 서비스 제공 및 유지\n- 사용자 경험 개선\n- 알림 전송\n\n3. 정보 공유\n개인정보를 판매하지 않습니다. 다음과 같은 경우에만 정보를 공유합니다:\n- 서비스 제공자\n- 법적 요구사항\n\n4. 데이터 보안\n귀하의 정보를 보호하기 위한 보안 조치 구현\n\n5. 귀하의 권리\n다음과 같은 권리가 있습니다:\n- 데이터 접근\n- 데이터 수정\n- 데이터 삭제\n\n6. 문의하기\n개인정보 관련 문의: privacy@smartmusic.com";
+"settings.about.terms" = "이용약관";
+"settings.about.terms.content" = "이용약관\n\n1. 약관 동의\nSmartMusic을 사용함으로써 본 약관에 동의하게 됩니다.\n\n2. 사용자 계정\n- 계정 보안에 대한 책임은 사용자에게 있습니다\n- 13세 이상만 사용 가능\n\n3. 사용자 콘텐츠\n- 콘텐츠에 대한 권리는 사용자가 보유\n- 당사에 사용 라이선스 부여\n\n4. 금지된 활동\n- 불법 콘텐츠 금지\n- 괴롭힘 금지\n- 무단 접근 금지\n\n5. 서비스 수정\n서비스를 수정하거나 중단할 수 있음\n\n6. 책임의 제한\n서비스는 '있는 그대로' 제공됨\n\n7. 준거법\n관련 법률의 적용을 받음\n\n8. 문의\n문의사항: support@smartmusic.com";
 
 "home.featured" = "추천";
 "home.myFavorites" = "내 즐겨찾기";
@@ -47,4 +63,19 @@
 "playlist.addSongs.source" = "소스 선택";
 "common.done" = "완료";
 "favorites.empty.title" = "즐겨찾기 없음";
-"favorites.empty.description" = "아직 즐겨찾기한 노래가 없습니다"; 
+"favorites.empty.description" = "아직 즐겨찾기한 노래가 없습니다";
+"common.cancel" = "취소";
+"common.create" = "만들기";
+
+"youtube.trending" = "인기";
+"youtube.category.all" = "전체";
+"youtube.category.music" = "음악";
+"youtube.category.live" = "라이브";
+"youtube.category.cover" = "커버";
+"youtube.category.mv" = "뮤직비디오";
+"youtube.search.placeholder" = "동영상 검색";
+"youtube.music" = "음악";
+"youtube.player.title" = "재생 중";
+"youtube.error.loading" = "로딩 실패";
+"youtube.error.playback" = "재생 오류";
+"youtube.refresh" = "새로고침";
