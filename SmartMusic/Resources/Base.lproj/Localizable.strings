@@ -1,5 +1,7 @@
 "app.name" = "SmartMusic";
 "tab.home" = "Home";
+"tab.youtube" = "Youtube";
+
 "tab.search" = "Search";
 "tab.playlist" = "Playlist";
 "tab.profile" = "Profile";
@@ -23,9 +25,11 @@
 "profile.favorites" = "My Favorites";
 "profile.history" = "Play History";
 "profile.settings" = "Settings";
+"profile.playlists" = "Playlists";
 "profile.about" = "About";
 "profile.edit" = "Edit";
 "profile.logout" = "Logout";
+
 
 "settings.language" = "Language";
 "settings.theme" = "Theme";

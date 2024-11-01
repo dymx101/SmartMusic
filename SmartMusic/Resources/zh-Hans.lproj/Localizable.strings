@@ -42,4 +42,8 @@
 
 "player.noSong" = "暂无播放歌曲";
 "player.unknownArtist" = "未知艺术家";
-"playlist.empty" = "暂无播放列表"; 
+"playlist.empty" = "暂无播放列表";
+
+"profile.stats.favorites" = "收藏";
+"profile.stats.playlists" = "歌单";
+"profile.stats.history" = "历史";

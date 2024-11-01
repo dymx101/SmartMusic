@@ -1,6 +1,8 @@
 import SwiftUI
+import SwiftData
 
 struct UserInfoSection: View {
+    @Environment(\.modelContext) private var modelContext
     let user: User?
     private let logger = LogService.shared
     
@@ -30,16 +32,23 @@ struct UserInfoSection: View {
             }
             
             // 用户名
-            Text(user?.username ?? "未登录")
+            Text(user?.username ?? NSLocalizedString("profile.logout", comment: ""))
                 .font(.title2)
                 .bold()
+            
+//            "profile.favorites" = "My Favorites";
+//            "profile.history" = "Play History";
+//            "profile.settings" = "Settings";
+//            "profile.about" = "About";
+//            "profile.edit" = "Edit";
+//            "profile.logout" = "Logout";
             
             // 统计信息
             HStack(spacing: 40) {
                 VStack {
                     Text("\(user?.favoriteCount ?? 0)")
                         .font(.headline)
-                    Text("收藏")
+                    Text(NSLocalizedString("profile.favorites", comment: ""))
                         .font(.caption)
                         .foregroundColor(.secondary)
                 }
@@ -47,7 +56,7 @@ struct UserInfoSection: View {
                 VStack {
                     Text("\(user?.playlistCount ?? 0)")
                         .font(.headline)
-                    Text("歌单")
+                    Text(NSLocalizedString("profile.playlists", comment: ""))
                         .font(.caption)
                         .foregroundColor(.secondary)
                 }
@@ -55,10 +64,13 @@ struct UserInfoSection: View {
                 VStack {
                     Text("\(user?.historyCount ?? 0)")
                         .font(.headline)
-                    Text("历史")
+                    Text(NSLocalizedString("profile.history", comment: ""))
                         .font(.caption)
                         .foregroundColor(.secondary)
                 }
+            }
+            .onAppear {
+                updateUserStats()
             }
         }
         .padding()
@@ -68,5 +80,37 @@ struct UserInfoSection: View {
         .onAppear {
             logger.info("User info section appeared for user: \(user?.username ?? "unknown")")
         }
+    }
+    
+    // 添加更新统计信息的方法
+    private func updateUserStats() {
+        guard let user = user else { return }
+        
+        // 获取收藏数
+        let favoritesDescriptor = FetchDescriptor<Favorite>()
+        let favoriteCount = (try? modelContext.fetch(favoritesDescriptor))?.count ?? 0
+        
+        // 获取播放列表数
+        let playlistsDescriptor = FetchDescriptor<Playlist>()
+        let playlistCount = (try? modelContext.fetch(playlistsDescriptor))?.count ?? 0
+        
+        // 获取播放历史数
+        let historyDescriptor = FetchDescriptor<PlayHistory>()
+        let historyCount = (try? modelContext.fetch(historyDescriptor))?.count ?? 0
+        
+        // 更新用户统计信息
+        user.favoriteCount = favoriteCount
+        user.playlistCount = playlistCount
+        user.historyCount = historyCount
+        
+        // 保存更新
+        try? modelContext.save()
+        
+        logger.debug("""
+            Updated user stats:
+            - Favorites: \(favoriteCount)
+            - Playlists: \(playlistCount)
+            - History: \(historyCount)
+            """)
     }
 }

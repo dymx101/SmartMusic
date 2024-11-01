@@ -4,32 +4,38 @@ import SwiftData
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     
+//    "app.name" = "SmartMusic";
+//    "tab.home" = "Home";
+//    "tab.search" = "Search";
+//    "tab.playlist" = "Playlist";
+//    "tab.profile" = "Profile";
+    
     var body: some View {
         ZStack(alignment: .bottom) {
             TabView {
                 HomeView(modelContext: modelContext)
                     .tabItem {
-                        Label("首页", systemImage: "house.fill")
+                        Label(NSLocalizedString("tab.home", comment: ""), systemImage: "house.fill")
                     }
                 
                 SearchView()
                     .tabItem {
-                        Label("搜索", systemImage: "magnifyingglass")
+                        Label(NSLocalizedString("tab.search", comment: ""), systemImage: "magnifyingglass")
                     }
                 
                 YouTubeMusicView()
                     .tabItem {
-                        Label("YouTube", systemImage: "play.square.fill")
+                        Label(NSLocalizedString("tab.youtube", comment: ""), systemImage: "play.square.fill")
                     }
                 
                 PlaylistView(modelContext: modelContext)
                     .tabItem {
-                        Label("播放列表", systemImage: "music.note.list")
+                        Label(NSLocalizedString("tab.playlist", comment: ""), systemImage: "music.note.list")
                     }
                 
                 ProfileView(modelContext: modelContext)
                     .tabItem {
-                        Label("我的", systemImage: "person.fill")
+                        Label(NSLocalizedString("tab.profile", comment: ""), systemImage: "person.fill")
                     }
             }
             .safeAreaInset(edge: .bottom) {

@@ -24,7 +24,7 @@ struct APIResponse<T: Codable>: Codable {
 
 class NetworkService {
     static let shared = NetworkService()
-    private let baseURL = "http://35.188.0.156:8000"
+    private let baseURL = "http://34.71.190.229:8000"
     private let logger = LogService.shared
     
     private init() {}
