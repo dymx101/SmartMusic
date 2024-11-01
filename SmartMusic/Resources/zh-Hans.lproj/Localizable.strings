@@ -1,25 +1,31 @@
+/* App general */
 "app.name" = "智能音乐";
 "tab.home" = "首页";
 "tab.search" = "搜索";
 "tab.playlist" = "播放列表";
 "tab.profile" = "我的";
+"tab.youtube" = "YouTube";
 
+/* Player */
 "player.play" = "播放";
 "player.pause" = "暂停";
 "player.next" = "下一首";
 "player.previous" = "上一首";
 
+/* Playlist */
 "playlist.create" = "创建播放列表";
 "playlist.delete" = "删除播放列表";
 "playlist.edit" = "编辑播放列表";
 "playlist.addSongs" = "添加歌曲";
 
+/* Search */
 "search.placeholder" = "搜索歌曲、歌手、专辑...";
 "search.history" = "搜索历史";
 "search.clear" = "清除历史";
 "search.results" = "搜索结果";
 "search.noResults" = "未找到相关结果";
 
+/* Profile */
 "profile.favorites" = "我的收藏";
 "profile.history" = "播放历史";
 "profile.settings" = "设置";
@@ -27,11 +33,13 @@
 "profile.edit" = "编辑";
 "profile.logout" = "退出登录";
 
+/* Settings */
 "settings.language" = "语言";
 "settings.theme" = "主题";
 "settings.notification" = "通知";
 "settings.privacy" = "隐私";
 
+/* Home */
 "home.featured" = "精选推荐";
 "home.myFavorites" = "我的收藏";
 "home.genres" = "音乐类型";
@@ -40,34 +48,43 @@
 "home.noFavorites" = "还没有收藏的歌曲";
 "home.noGenres" = "暂无音乐类型";
 
+/* Player states */
 "player.noSong" = "暂无播放歌曲";
 "player.unknownArtist" = "未知艺术家";
 "playlist.empty" = "暂无播放列表";
 
+/* Profile stats */
 "profile.stats.favorites" = "收藏";
 "profile.stats.playlists" = "歌单";
 "profile.stats.history" = "历史";
 
+/* Common */
 "playlist.addSongs.source" = "选择来源";
 "common.done" = "完成";
 "favorites.empty.title" = "暂无收藏";
 "favorites.empty.description" = "你还没有收藏任何歌曲";
 
-// 播放列表创建相关
+/* Playlist creation */
 "playlist.create.name" = "播放列表名称";
 "playlist.create.title" = "新建播放列表";
 "common.cancel" = "取消";
 "common.create" = "创建";
 
-// YouTube相关
-"tab.youtube" = "YouTube";
+/* YouTube */
+"youtube.trending" = "热门推荐";
+"youtube.category.all" = "全部";
+"youtube.category.music" = "音乐";
+"youtube.category.live" = "现场";
+"youtube.category.cover" = "翻唱";
+"youtube.category.mv" = "MV";
+"youtube.search.placeholder" = "搜索视频";
 "youtube.music" = "音乐";
 "youtube.player.title" = "正在播放";
 "youtube.error.loading" = "加载失败";
 "youtube.error.playback" = "播放出错";
 "youtube.refresh" = "刷新";
 
-// 设置页面
+/* Settings screen */
 "settings.title" = "设置";
 "settings.playback.title" = "播放设置";
 "settings.playback.background" = "后台播放";
@@ -76,6 +93,6 @@
 "settings.about.title" = "关于";
 "settings.about.version" = "版本";
 "settings.about.privacy" = "隐私政策";
-"settings.about.privacy.content" = "隐私政策内容";
+"settings.about.privacy.content" = "隐私政策\n\n1. 信息收集\n我们收集您直接提供给我们的信息，包括：\n- 账户信息\n- 使用数据\n- 设备信息\n\n2. 信息使用方式\n我们使用收集的信息用于：\n- 提供和维护服务\n- 改善用户体验\n- 发送通知\n\n3. 信息共享\n我们不会出售您的个人信息。我们可能与以下方共享信息：\n- 服务提供商\n- 法律要求\n\n4. 数据安全\n我们实施安全措施保护您的信息\n\n5. 您的权利\n您有权：\n- 访问您的数据\n- 更正您的数据\n- 删除您的数据\n\n6. 联系我们\n隐私问题请联系：privacy@smartmusic.com";
 "settings.about.terms" = "用户协议";
-"settings.about.terms.content" = "用户协议内容";
+"settings.about.terms.content" = "用户协议\n\n1. 协议接受\n使用SmartMusic即表示您同意本协议。\n\n2. 用户账户\n- 您需要负责账户安全\n- 使用者年龄需满13岁\n\n3. 用户内容\n- 您保留内容权利\n- 授予我们使用许可\n\n4. 禁止行为\n- 禁止非法内容\n- 禁止骚扰行为\n- 禁止未授权访问\n\n5. 服务修改\n我们可能修改或终止服务\n\n6. 责任限制\n服务按\"现状\"提供\n\n7. 适用法律\n受适用法律管辖\n\n8. 联系方式\n问题咨询：support@smartmusic.com";

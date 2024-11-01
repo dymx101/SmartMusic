@@ -83,6 +83,6 @@
 "settings.about.title" = "About";
 "settings.about.version" = "Version";
 "settings.about.privacy" = "Privacy Policy";
-"settings.about.privacy.content" = "Privacy Policy Content";
+"settings.about.privacy.content" = "Privacy Policy\n\n1. Information Collection\nWe collect information that you provide directly to us, including:\n- Account information\n- Usage data\n- Device information\n\n2. How We Use Information\nWe use the collected information to:\n- Provide and maintain services\n- Improve user experience\n- Send notifications\n\n3. Information Sharing\nWe do not sell your personal information. We may share information with:\n- Service providers\n- Legal requirements\n\n4. Data Security\nWe implement security measures to protect your information\n\n5. Your Rights\nYou have the right to:\n- Access your data\n- Correct your data\n- Delete your data\n\n6. Contact Us\nFor privacy questions: privacy@smartmusic.com";
 "settings.about.terms" = "Terms of Service";
-"settings.about.terms.content" = "Terms of Service Content";
+"settings.about.terms.content" = "Terms of Service\n\n1. Acceptance of Terms\nBy using SmartMusic, you agree to these terms.\n\n2. User Account\n- You are responsible for your account security\n- Must be 13 or older to use\n\n3. User Content\n- You retain rights to your content\n- Grant us license to use content\n\n4. Prohibited Activities\n- No illegal content\n- No harassment\n- No unauthorized access\n\n5. Service Modifications\nWe may modify or discontinue services\n\n6. Limitation of Liability\nService provided 'as is'\n\n7. Governing Law\nGoverned by applicable laws\n\n8. Contact\nQuestions: support@smartmusic.com";
