@@ -14,7 +14,7 @@ struct YouTubeMusicView: View {
                     // 热门视频横向滚动区域
                     if !viewModel.trendingVideos.isEmpty {
                         VStack(alignment: .leading) {
-                            Text("热门推荐")
+                            Text("youtube.trending".localized)
                                 .font(.title2)
                                 .fontWeight(.bold)
                                 .padding(.horizontal)
@@ -36,7 +36,13 @@ struct YouTubeMusicView: View {
                     // 分类标签
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack(spacing: 12) {
-                            ForEach(["全部", "音乐", "现场", "翻唱", "MV"], id: \.self) { category in
+                            ForEach([
+                                "youtube.category.all".localized, 
+                                "youtube.category.music".localized, 
+                                "youtube.category.live".localized, 
+                                "youtube.category.cover".localized, 
+                                "youtube.category.mv".localized
+                            ], id: \.self) { category in
                                 CategoryTag(title: category, 
                                           isSelected: viewModel.selectedCategory == category)
                                     .onTapGesture {
@@ -65,7 +71,7 @@ struct YouTubeMusicView: View {
                     .padding(.horizontal)
                 }
             }
-            .navigationTitle("YouTube Music")
+            .navigationTitle("tab.youtube".localized)
             .sheet(item: Binding(
                 get: { selectedVideoId.map { VideoIdentifier(id: $0) } },
                 set: { selectedVideoId = $0?.id }
@@ -86,7 +92,7 @@ struct YouTubeMusicView: View {
             Image(systemName: "magnifyingglass")
                 .foregroundColor(.gray)
             
-            TextField("搜索视频", text: $viewModel.searchQuery)
+            TextField("youtube.search.placeholder".localized, text: $viewModel.searchQuery)
                 .textFieldStyle(.plain)
                 .onSubmit {
                     Task {

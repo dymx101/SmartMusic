@@ -1,6 +1,6 @@
 "app.name" = "SmartMusic";
 "tab.home" = "Home";
-"tab.youtube" = "Youtube";
+"tab.youtube" = "YouTube";
 
 "tab.search" = "Search";
 "tab.playlist" = "Playlist";
@@ -46,4 +46,30 @@
 
 "player.noSong" = "No song playing";
 "player.unknownArtist" = "Unknown Artist";
-"playlist.empty" = "No playlists yet"; 
+"playlist.empty" = "No playlists yet";
+"playlist.count" = "songs"; 
+
+"playlist.addSongs.source" = "Select Source";
+"common.done" = "Done";
+"favorites.empty.title" = "No Favorites";
+"favorites.empty.description" = "You haven't added any songs to favorites yet";
+
+// 播放列表创建相关
+"playlist.create.name" = "Playlist name";
+"playlist.create.title" = "Create Playlist";
+"common.cancel" = "Cancel";
+"common.create" = "Create";
+
+// YouTube related
+"youtube.trending" = "Trending";
+"youtube.category.all" = "All";
+"youtube.category.music" = "Music";
+"youtube.category.live" = "Live";
+"youtube.category.cover" = "Cover";
+"youtube.category.mv" = "MV";
+"youtube.search.placeholder" = "Search videos";
+"youtube.music" = "Music";
+"youtube.player.title" = "Now Playing";
+"youtube.error.loading" = "Failed to load";
+"youtube.error.playback" = "Playback error";
+"youtube.refresh" = "Refresh";

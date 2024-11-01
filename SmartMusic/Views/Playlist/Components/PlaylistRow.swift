@@ -17,7 +17,7 @@ struct PlaylistRow: View {
                 Text(playlist.name)
                     .font(.headline)
                 
-                Text("\(playlist.songs.count) 首歌曲")
+                Text("\(playlist.songs.count) \(NSLocalizedString("playlist.count", comment: ""))")
                     .font(.caption)
                     .foregroundColor(.secondary)
             }

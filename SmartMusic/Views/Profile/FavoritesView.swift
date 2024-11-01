@@ -29,13 +29,13 @@ struct FavoritesView: View {
                 )
             }
         }
-        .navigationTitle("我的收藏")
+        .navigationTitle(NSLocalizedString("profile.favorites", comment: ""))
         .overlay {
             if viewModel.favorites.isEmpty {
                 ContentUnavailableView(
-                    "暂无收藏",
+                    NSLocalizedString("favorites.empty.title", comment: ""),
                     systemImage: "heart.slash",
-                    description: Text("你还没有收藏任何歌曲")
+                    description: Text(NSLocalizedString("favorites.empty.description", comment: ""))
                 )
             }
         }

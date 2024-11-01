@@ -3,6 +3,7 @@
 "tab.search" = "検索";
 "tab.playlist" = "プレイリスト";
 "tab.profile" = "プロフィール";
+"tab.youtube" = "YouTube";
 
 "player.play" = "再生";
 "player.pause" = "一時停止";
@@ -42,4 +43,27 @@
 
 "player.noSong" = "再生中の曲はありません";
 "player.unknownArtist" = "不明なアーティスト";
-"playlist.empty" = "プレイリストがありません"; 
+"playlist.empty" = "プレイリストがありません";
+
+"playlist.addSongs.source" = "ソースを選択";
+"common.done" = "完了";
+"favorites.empty.title" = "お気に入りなし";
+"favorites.empty.description" = "まだお気に入りの曲がありません";
+
+"playlist.create.name" = "プレイリスト名";
+"playlist.create.title" = "プレイリストを作成";
+"common.cancel" = "キャンセル";
+"common.create" = "作成";
+
+"youtube.trending" = "トレンド";
+"youtube.category.all" = "すべて";
+"youtube.category.music" = "音楽";
+"youtube.category.live" = "ライブ";
+"youtube.category.cover" = "カバー";
+"youtube.category.mv" = "MV";
+"youtube.search.placeholder" = "動画を検索";
+"youtube.music" = "ミュージック";
+"youtube.player.title" = "再生中";
+"youtube.error.loading" = "読み込みに失敗しました";
+"youtube.error.playback" = "再生エラー";
+"youtube.refresh" = "更新";

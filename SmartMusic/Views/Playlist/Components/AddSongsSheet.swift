@@ -11,9 +11,9 @@ struct AddSongsSheet: View {
     var body: some View {
         NavigationView {
             VStack {
-                Picker("选择来源", selection: $selectedTab) {
-                    Text("我的收藏").tag(0)
-                    Text("播放历史").tag(1)
+                Picker(NSLocalizedString("playlist.addSongs.source", comment: ""), selection: $selectedTab) {
+                    Text(NSLocalizedString("profile.favorites", comment: "")).tag(0)
+                    Text(NSLocalizedString("profile.history", comment: "")).tag(1)
                 }
                 .pickerStyle(.segmented)
                 .padding()
@@ -24,11 +24,11 @@ struct AddSongsSheet: View {
                     HistoryList(playlist: playlist, playlistViewModel: viewModel)
                 }
             }
-            .navigationTitle("添加歌曲")
+            .navigationTitle(NSLocalizedString("playlist.addSongs", comment: ""))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("完成") {
+                    Button(NSLocalizedString("common.done", comment: "")) {
                         dismiss()
                     }
                 }

@@ -43,3 +43,8 @@
 "player.noSong" = "Aucune chanson en cours";
 "player.unknownArtist" = "Artiste inconnu";
 "playlist.empty" = "Aucune playlist";
+
+"playlist.addSongs.source" = "Sélectionner la source";
+"common.done" = "Terminé";
+"favorites.empty.title" = "Aucun favori";
+"favorites.empty.description" = "Vous n'avez pas encore ajouté de titres aux favoris";

@@ -47,3 +47,22 @@
 "profile.stats.favorites" = "收藏";
 "profile.stats.playlists" = "歌单";
 "profile.stats.history" = "历史";
+
+"playlist.addSongs.source" = "选择来源";
+"common.done" = "完成";
+"favorites.empty.title" = "暂无收藏";
+"favorites.empty.description" = "你还没有收藏任何歌曲";
+
+// 播放列表创建相关
+"playlist.create.name" = "播放列表名称";
+"playlist.create.title" = "新建播放列表";
+"common.cancel" = "取消";
+"common.create" = "创建";
+
+// YouTube相关
+"tab.youtube" = "YouTube";
+"youtube.music" = "音乐";
+"youtube.player.title" = "正在播放";
+"youtube.error.loading" = "加载失败";
+"youtube.error.playback" = "播放出错";
+"youtube.refresh" = "刷新";
