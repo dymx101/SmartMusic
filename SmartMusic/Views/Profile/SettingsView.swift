@@ -8,45 +8,45 @@ struct SettingsView: View {
     
     var body: some View {
         Form {
-            Section(header: Text("播放设置")) {
-                Toggle("后台播放", isOn: $enableBackgroundPlay)
+            Section(header: Text("settings.playback.title".localized)) {
+                Toggle("settings.playback.background".localized, isOn: $enableBackgroundPlay)
                     .onChange(of: enableBackgroundPlay) { newValue in
                         logger.info("Background play setting changed to: \(newValue)")
                     }
-                Toggle("高音质", isOn: $enableHighQuality)
+                Toggle("settings.playback.quality".localized, isOn: $enableHighQuality)
                     .onChange(of: enableHighQuality) { newValue in
                         logger.info("High quality setting changed to: \(newValue)")
                     }
-                Toggle("自动播放", isOn: $enableAutoPlay)
+                Toggle("settings.playback.autoplay".localized, isOn: $enableAutoPlay)
                     .onChange(of: enableAutoPlay) { newValue in
                         logger.info("Auto play setting changed to: \(newValue)")
                     }
             }
             
-            Section(header: Text("关于")) {
+            Section(header: Text("settings.about.title".localized)) {
                 HStack {
-                    Text("版本")
+                    Text("settings.about.version".localized)
                     Spacer()
                     Text("1.0.0")
                         .foregroundColor(.secondary)
                 }
                 
-                NavigationLink("隐私政策") {
-                    Text("隐私政策内容")
+                NavigationLink("settings.about.privacy".localized) {
+                    Text("settings.about.privacy.content".localized)
                 }
                 .onTapGesture {
                     logger.debug("User tapped privacy policy")
                 }
                 
-                NavigationLink("用户协议") {
-                    Text("用户协议内容")
+                NavigationLink("settings.about.terms".localized) {
+                    Text("settings.about.terms.content".localized)
                 }
                 .onTapGesture {
                     logger.debug("User tapped user agreement")
                 }
             }
         }
-        .navigationTitle("设置")
+        .navigationTitle("settings.title".localized)
         .onAppear {
             logger.info("Settings view appeared")
         }

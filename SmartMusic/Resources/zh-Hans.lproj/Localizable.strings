@@ -66,3 +66,16 @@
 "youtube.error.loading" = "加载失败";
 "youtube.error.playback" = "播放出错";
 "youtube.refresh" = "刷新";
+
+// 设置页面
+"settings.title" = "设置";
+"settings.playback.title" = "播放设置";
+"settings.playback.background" = "后台播放";
+"settings.playback.quality" = "高音质";
+"settings.playback.autoplay" = "自动播放";
+"settings.about.title" = "关于";
+"settings.about.version" = "版本";
+"settings.about.privacy" = "隐私政策";
+"settings.about.privacy.content" = "隐私政策内容";
+"settings.about.terms" = "用户协议";
+"settings.about.terms.content" = "用户协议内容";

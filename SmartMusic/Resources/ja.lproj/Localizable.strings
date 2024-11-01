@@ -67,3 +67,16 @@
 "youtube.error.loading" = "読み込みに失敗しました";
 "youtube.error.playback" = "再生エラー";
 "youtube.refresh" = "更新";
+
+// 設定画面
+"settings.title" = "設定";
+"settings.playback.title" = "再生設定";
+"settings.playback.background" = "バックグラウンド再生";
+"settings.playback.quality" = "高音質";
+"settings.playback.autoplay" = "自動再生";
+"settings.about.title" = "アプリについて";
+"settings.about.version" = "バージョン";
+"settings.about.privacy" = "プライバシーポリシー";
+"settings.about.privacy.content" = "プライバシーポリシーの内容";
+"settings.about.terms" = "利用規約";
+"settings.about.terms.content" = "利用規約の内容";

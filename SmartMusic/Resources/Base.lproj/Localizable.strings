@@ -73,3 +73,16 @@
 "youtube.error.loading" = "Failed to load";
 "youtube.error.playback" = "Playback error";
 "youtube.refresh" = "Refresh";
+
+// Settings screen
+"settings.title" = "Settings";
+"settings.playback.title" = "Playback Settings";
+"settings.playback.background" = "Background Play";
+"settings.playback.quality" = "High Quality";
+"settings.playback.autoplay" = "Auto Play";
+"settings.about.title" = "About";
+"settings.about.version" = "Version";
+"settings.about.privacy" = "Privacy Policy";
+"settings.about.privacy.content" = "Privacy Policy Content";
+"settings.about.terms" = "Terms of Service";
+"settings.about.terms.content" = "Terms of Service Content";
