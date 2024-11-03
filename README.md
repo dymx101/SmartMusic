@@ -1,6 +1,8 @@
 # SmartMusic iOS App
 
 SmartMusic 是一款现代化的音乐播放应用，提供个性化推荐、在线播放、歌单管理等功能。
+## Remote config
+https://dymx102.github.io/PhotoMagicSite/configs/app_config.json
 
 ## 功能特点
 
