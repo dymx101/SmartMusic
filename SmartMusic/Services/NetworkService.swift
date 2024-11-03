@@ -24,8 +24,11 @@ struct APIResponse<T: Codable>: Codable {
 
 class NetworkService {
     static let shared = NetworkService()
-    private let baseURL = "http://34.71.190.229:8000"
     private let logger = LogService.shared
+    
+    private var baseURL: String {
+        AppConfigManager.shared.apiBaseUrl
+    }
     
     private init() {}
     
@@ -572,7 +575,7 @@ class NetworkService {
                 
                 // 将临时歌曲转换为正式的 Song 对象
                 let songs = tempSongs.enumerated().map { index, tempSong -> Song in
-                    // 基础ID从1000开始
+                    // 础ID从1000开始
                     // offset 表示已经跳过的数量
                     // index 是当前页中的索引
                     let id = 1000 + page*30 + index

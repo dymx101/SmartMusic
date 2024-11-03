@@ -6,6 +6,7 @@ struct SmartMusicApp: App {
     let container: ModelContainer
     @State private var showLaunchScreen = true
     private let logger = LogService.shared
+    private let configManager = AppConfigManager.shared
     
     init() {
         do {
