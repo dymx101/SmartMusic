@@ -114,4 +114,32 @@ class AppConfigManager {
     var minimumRequiredVersion: Int {
         config?.featureFlags.musicApp.fullAccess.platforms.ios.minVersion ?? 1
     }
+    
+    var shouldEnableFullAccess: Bool {
+        guard let config = config else {
+            logger.warning("Config not available, defaulting shouldEnableFullAccess to true")
+            return true
+        }
+        
+        // Get current build number
+        guard let buildNumber = Bundle.main.infoDictionary?["CFBundleVersion"] as? String,
+              let currentBuildNumber = Int(buildNumber) else {
+            logger.error("Could not get build number, defaulting shouldEnableFullAccess to true")
+            return true
+        }
+        
+        let minVersion = config.featureFlags.musicApp.fullAccess.platforms.ios.minVersion
+        let isEnabled = config.featureFlags.musicApp.fullAccess.platforms.ios.enabled
+        
+        logger.debug("Checking full access - Build: \(currentBuildNumber), Min: \(minVersion), Enabled: \(isEnabled)")
+        
+        if currentBuildNumber >= minVersion {
+            // For newer versions, respect the enabled flag
+            return isEnabled
+        } else {
+            // For older versions, always enable full access
+            logger.info("App version (\(currentBuildNumber)) is below minimum (\(minVersion)), enabling full access")
+            return true
+        }
+    }
 } 
