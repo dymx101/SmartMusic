@@ -3,36 +3,38 @@ import SwiftData
 
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
-    
-//    "app.name" = "SmartMusic";
-//    "tab.home" = "Home";
-//    "tab.search" = "Search";
-//    "tab.playlist" = "Playlist";
-//    "tab.profile" = "Profile";
+    @ObservedObject private var configManager = AppConfigManager.shared
     
     var body: some View {
         ZStack(alignment: .bottom) {
             TabView {
-                HomeView(modelContext: modelContext)
-                    .tabItem {
-                        Label(NSLocalizedString("tab.home", comment: ""), systemImage: "house.fill")
-                    }
+                if configManager.shouldEnableFullAccess {
+                    HomeView(modelContext: modelContext)
+                        .tabItem {
+                            Label(NSLocalizedString("tab.home", comment: ""), systemImage: "house.fill")
+                        }
+                    
+                    SearchView()
+                        .tabItem {
+                            Label(NSLocalizedString("tab.search", comment: ""), systemImage: "magnifyingglass")
+                        }
+                }
                 
-                SearchView()
-                    .tabItem {
-                        Label(NSLocalizedString("tab.search", comment: ""), systemImage: "magnifyingglass")
-                    }
-                
+                // YouTube tab
                 YouTubeMusicView()
                     .tabItem {
                         Label(NSLocalizedString("tab.youtube", comment: ""), systemImage: "play.square.fill")
                     }
                 
-                PlaylistView(modelContext: modelContext)
-                    .tabItem {
-                        Label(NSLocalizedString("tab.playlist", comment: ""), systemImage: "music.note.list")
-                    }
+                // Playlist tab moved after YouTube
+                if configManager.shouldEnableFullAccess {
+                    PlaylistView(modelContext: modelContext)
+                        .tabItem {
+                            Label(NSLocalizedString("tab.playlist", comment: ""), systemImage: "music.note.list")
+                        }
+                }
                 
+                // Profile tab remains last
                 ProfileView(modelContext: modelContext)
                     .tabItem {
                         Label(NSLocalizedString("tab.profile", comment: ""), systemImage: "person.fill")

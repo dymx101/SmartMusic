@@ -1,6 +1,6 @@
 import Foundation
 
-class AppConfigManager {
+class AppConfigManager: ObservableObject {
     static let shared = AppConfigManager()
     private let logger = LogService.shared
     
@@ -54,12 +54,19 @@ class AppConfigManager {
         do {
             let (data, _) = try await URLSession.shared.data(from: url)
             let decoder = JSONDecoder()
-            config = try decoder.decode(RemoteConfig.self, from: data)
-            logger.info("Successfully fetched remote config")
+            let remoteConfig = try decoder.decode(RemoteConfig.self, from: data)
             
-            // After fetching config, check server IPs
-            if let serverIps = config?.serverIp {
-                await findAccessibleServer(from: serverIps)
+            // Update published properties on the main thread
+            await MainActor.run {
+                config = remoteConfig
+                logger.info("Successfully fetched remote config")
+                
+                // After fetching config, check server IPs
+                if let serverIps = config?.serverIp {
+                    Task {
+                        await findAccessibleServer(from: serverIps)
+                    }
+                }
             }
         } catch {
             logger.error("Failed to fetch remote config: \(error.localizedDescription)")
@@ -80,7 +87,10 @@ class AppConfigManager {
                 if let httpResponse = response as? HTTPURLResponse {
                     // Any response (even error responses) means the server is reachable
                     logger.info("Found accessible server: \(serverIp) with status code: \(httpResponse.statusCode)")
-                    activeServerIp = serverIp
+                    // Update published property on the main thread
+                    await MainActor.run {
+                        activeServerIp = serverIp
+                    }
                     return
                 }
             } catch {
@@ -91,7 +101,9 @@ class AppConfigManager {
         
         // If no server is accessible, use the first one as fallback
         if activeServerIp == nil {
-            activeServerIp = serverIps.first
+            await MainActor.run {
+                activeServerIp = serverIps.first
+            }
             logger.warning("No accessible server found, using first server as fallback: \(activeServerIp ?? "none")")
         }
     }
