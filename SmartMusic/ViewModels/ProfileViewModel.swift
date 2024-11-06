@@ -26,7 +26,7 @@ class ProfileViewModel: ObservableObject {
             logger.info("Found existing user: \(existingUser.username)")
         } else {
             logger.info("No existing user found, creating default user")
-            let defaultUser = User(username: "音乐爱好者")
+            let defaultUser = User(username: NSLocalizedString("profile.name", comment: ""))
             modelContext.insert(defaultUser)
             try? modelContext.save()
             user = defaultUser

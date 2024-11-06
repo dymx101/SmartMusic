@@ -29,6 +29,7 @@
 "profile.about" = "About";
 "profile.edit" = "Edit";
 "profile.logout" = "Logout";
+"profile.name" = "temp name";
 
 
 "settings.language" = "Language";

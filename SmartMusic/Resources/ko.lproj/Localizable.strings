@@ -31,6 +31,7 @@
 "profile.edit" = "편집";
 "profile.logout" = "로그아웃";
 "profile.playlists" = "내 노래 목록";
+"profile.name" = "임시 이름";
 
 "settings.language" = "언어";
 "settings.theme" = "테마";

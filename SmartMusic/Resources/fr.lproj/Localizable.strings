@@ -31,6 +31,7 @@
 "profile.edit" = "Modifier";
 "profile.logout" = "Déconnexion";
 "profile.playlists" = "Mes playlists";
+"profile.name" = "nom temporaire";
 
 "settings.language" = "Langue";
 "settings.theme" = "Thème";

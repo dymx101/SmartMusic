@@ -27,6 +27,7 @@
 "profile.about" = "アプリについて";
 "profile.edit" = "編集";
 "profile.logout" = "ログアウト";
+"profile.name" = "仮（かり）の名前（なまえ）";
 
 "settings.language" = "言語";
 "settings.theme" = "テーマ";

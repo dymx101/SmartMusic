@@ -116,7 +116,7 @@ class AppConfigManager: ObservableObject {
         if let serverIps = config?.serverIp, !serverIps.isEmpty {
             return "http://\(serverIps[0]):8000"
         }
-        return "http://35.188.0.156:8000"
+        return "http://35.223.168.206:8000/"
     }
     
     var isFullAccessEnabled: Bool {
