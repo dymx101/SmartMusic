@@ -2,7 +2,7 @@ import Foundation
 
 class YouTubeService {
     static let shared = YouTubeService()
-    private let apiKey = "AIzaSyAYr_uAyr2PVrqjDJeiciFKAI8vmisxMRs"  // 使用配置文件中的 API 密钥
+    private let apiKey = "AIzaSyB7uDHRMPeV8tuzrRP1c7t5_hDcLC3rew8"  // 使用配置文件中的 API 密钥
     private let baseURL = "https://www.googleapis.com/youtube/v3"
     private let logger = LogService.shared
     
