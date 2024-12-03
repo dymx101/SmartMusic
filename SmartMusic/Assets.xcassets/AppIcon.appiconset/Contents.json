@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "musiclogo.png",
+      "filename" : "musiclogo 1.png",
       "idiom" : "universal",
       "platform" : "ios",
       "size" : "1024x1024"
@@ -13,7 +13,7 @@
           "value" : "dark"
         }
       ],
-      "filename" : "musiclogo 1.png",
+      "filename" : "musiclogo 2.png",
       "idiom" : "universal",
       "platform" : "ios",
       "size" : "1024x1024"
@@ -25,7 +25,7 @@
           "value" : "tinted"
         }
       ],
-      "filename" : "musiclogo 2.png",
+      "filename" : "musiclogo 3.png",
       "idiom" : "universal",
       "platform" : "ios",
       "size" : "1024x1024"
